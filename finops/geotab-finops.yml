@@ -1,0 +1,116 @@
+spec: FinOps Framework 1.0
+provider: Geotab
+providerId: geotab
+created: 2026-06-12
+modified: 2026-06-12
+
+billingModel:
+  type: subscription
+  description: >
+    Geotab uses a per-vehicle-per-month subscription model sold exclusively
+    through authorized resellers. Hardware (GO telematics device) is a one-time
+    purchase per vehicle. Software subscriptions are recurring monthly charges
+    per enrolled vehicle. Enterprise fleets typically negotiate volume pricing
+    directly with resellers.
+  currency: USD
+  billingCycle: monthly
+  commitmentOptions:
+    - monthly
+    - annual
+
+focusColumns:
+  BilledCurrency: USD
+  BillingAccountId: reseller-account-id
+  BillingAccountName: Reseller/Partner account name
+  BillingPeriodStart: First day of subscription month
+  BillingPeriodEnd: Last day of subscription month
+  ChargeCategory: Usage
+  ChargeClass: Regular
+  ChargeFrequency: Recurring
+  ChargeSubcategory: On-Demand
+  CommitmentDiscountCategory: Spend
+  CommitmentDiscountStatus: Used
+  ConsumedQuantity: Number of active vehicles
+  ConsumedUnit: Vehicle
+  ListUnitPrice: 20-40 USD per vehicle per month (reseller-dependent)
+  PricingCategory: Standard
+  PricingQuantity: Number of enrolled vehicles
+  PricingUnit: Vehicle/Month
+  ProviderName: Geotab
+  PublisherName: Geotab
+  RegionId: N/A
+  ResourceId: Vehicle device ID
+  ResourceName: Vehicle telematics device
+  ResourceType: Fleet Telematics Device
+  ServiceCategory: IoT
+  ServiceName: MyGeotab Fleet Management
+  SkuId: GO-CORE or GO-PLAN
+  SkuPriceId: reseller-negotiated
+
+meters:
+  - name: Active Vehicles
+    description: Number of vehicles with active telematics subscriptions per billing period
+    unit: Vehicle/Month
+    billable: true
+    pricingModel: per-unit
+    estimatedUnitCost:
+      currency: USD
+      low: 20
+      high: 40
+      note: Set by authorized resellers; contact reseller for exact pricing
+
+  - name: Hardware Device
+    description: One-time purchase of a GO telematics OBD-II device per vehicle
+    unit: Device
+    billable: true
+    pricingModel: one-time
+    estimatedUnitCost:
+      currency: USD
+      low: 130
+      high: 200
+      note: Hardware pricing set by authorized resellers
+
+  - name: API Calls (MyGeotab)
+    description: >
+      API calls to the MyGeotab API are not billed separately; they are included
+      with the software subscription. Rate limits apply to GetFeed and Authenticate
+      methods to ensure fair usage.
+    unit: Request
+    billable: false
+    note: Included in software subscription; no per-call charges
+
+  - name: API Calls (MyAdmin)
+    description: >
+      API calls to the MyAdmin API are available to authorized resellers and partners
+      and are not billed per call; they are included within the reseller agreement.
+    unit: Request
+    billable: false
+    note: Included in reseller agreement; no per-call charges
+
+principles:
+  - name: Understand Usage
+    description: >
+      Track the number of active enrolled vehicles per month to accurately
+      forecast subscription costs. Vehicle count is the primary billing dimension.
+  - name: Optimize Coverage
+    description: >
+      Audit enrolled devices regularly to decommission vehicles no longer in
+      the fleet, eliminating unnecessary per-vehicle subscription charges.
+  - name: Volume Negotiation
+    description: >
+      Larger fleets (50+ vehicles) should negotiate directly with resellers
+      for volume discounts and customized service agreements.
+  - name: Hardware Amortization
+    description: >
+      Amortize the one-time hardware cost over the expected device lifespan
+      (typically 3-5 years) to accurately represent total cost of ownership
+      in FinOps reporting.
+  - name: Plan Right-Sizing
+    description: >
+      Evaluate whether GO Core or GO Plan features are actually needed per vehicle
+      class or driver group, as not all vehicles may require the full feature set.
+
+sources:
+  - https://www.geotab.com/software-packages/
+  - https://www.geotab.com/blog/fleet-management-software-cost/
+  - https://www.geotab.com/blog/fleet-gps-tracking-systems-cost/

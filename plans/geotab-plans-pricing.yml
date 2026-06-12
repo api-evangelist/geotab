@@ -1,0 +1,133 @@
+spec: API Commons Plans 0.1
+provider: Geotab
+providerId: geotab
+created: 2026-06-12
+modified: 2026-06-12
+reconciled: true
+
+plans:
+  - name: GO Core Plan
+    type: paid
+    description: >
+      Entry-level fleet telematics plan covering real-time GPS tracking, live
+      map and trip history, exception alerts, basic routing and dispatch, maintenance
+      scheduling, asset inspections, basic IFTA reporting, and basic fuel economy
+      visibility. Includes access to the MyGeotab portal and 400+ Marketplace integrations.
+    pricing:
+      model: per-vehicle-per-month
+      currency: USD
+      low: 20
+      high: 30
+      note: Pricing set by authorized resellers; contact Geotab or a reseller for a quote.
+    features:
+      - type: boolean
+        name: Real-Time GPS Tracking
+        value: true
+      - type: boolean
+        name: Trip History
+        value: true
+      - type: boolean
+        name: Exception Alerts
+        value: true
+      - type: boolean
+        name: Basic Routing and Dispatch
+        value: true
+      - type: boolean
+        name: Maintenance Scheduling
+        value: true
+      - type: boolean
+        name: Basic IFTA Reporting
+        value: true
+      - type: boolean
+        name: Asset Inspections
+        value: true
+      - type: boolean
+        name: MyGeotab Portal Access
+        value: true
+      - type: boolean
+        name: Marketplace Integrations (400+)
+        value: true
+      - type: boolean
+        name: MyGeotab API Access
+        value: true
+      - type: boolean
+        name: Advanced ELD/HOS Compliance
+        value: false
+      - type: boolean
+        name: AI Safety Scoring
+        value: false
+
+  - name: GO Plan
+    type: paid
+    description: >
+      Full fleet telematics platform including everything in GO Core plus advanced
+      collision risk management, AI safety scoring, full HOS/ELD compliance,
+      tachograph management, predictive maintenance, full fuel monitoring,
+      EV monitoring and analytics, sustainability and emissions reporting,
+      advanced routing and profitability optimization, and video telematics
+      with AI dash cam integration.
+    pricing:
+      model: per-vehicle-per-month
+      currency: USD
+      low: 30
+      high: 40
+      note: Pricing set by authorized resellers; contact Geotab or a reseller for a quote. Enterprise fleets may receive volume discounts.
+    features:
+      - type: boolean
+        name: Real-Time GPS Tracking
+        value: true
+      - type: boolean
+        name: Trip History
+        value: true
+      - type: boolean
+        name: Exception Alerts
+        value: true
+      - type: boolean
+        name: Advanced Routing and Profitability Optimization
+        value: true
+      - type: boolean
+        name: Predictive Maintenance and Fault Diagnostics
+        value: true
+      - type: boolean
+        name: Full IFTA Reporting
+        value: true
+      - type: boolean
+        name: Full HOS/ELD Compliance
+        value: true
+      - type: boolean
+        name: Tachograph Management
+        value: true
+      - type: boolean
+        name: AI Safety Scoring and Collision Risk Management
+        value: true
+      - type: boolean
+        name: Full Fuel Monitoring and Idling Insights
+        value: true
+      - type: boolean
+        name: EV Monitoring and Suitability Assessment
+        value: true
+      - type: boolean
+        name: Sustainability and Emissions Reporting (CARB/ESG)
+        value: true
+      - type: boolean
+        name: Video Telematics and AI Dash Cam Integration
+        value: true
+      - type: boolean
+        name: MyGeotab API Access
+        value: true
+      - type: boolean
+        name: MyAdmin API Access (resellers)
+        value: true
+
+notes: >
+  Geotab sells its software and hardware exclusively through authorized third-party
+  resellers who set their own consumer pricing. Hardware (GO device) typically
+  starts at approximately $130 per device. A fleet of 50 vehicles can expect
+  to spend between $1,000 and $3,000 per month depending on configuration.
+  API access is included with all software plans. MyAdmin API access requires
+  a MyAdmin account with the MyAdminApiUser role and is intended for Geotab
+  resellers and partners.
+
+sources:
+  - https://www.geotab.com/software-packages/
+  - https://developers.geotab.com/myAdmin/introduction/index.html

@@ -1,0 +1,171 @@
+spec: API Commons Rate Limits 0.1
+provider: Geotab
+providerId: geotab
+created: 2026-06-12
+modified: 2026-06-12
+
+apis:
+  - name: MyGeotab API
+    baseURL: https://my.geotab.com/apiv1
+    rateLimits:
+      - scope: Authenticate method
+        description: Authentication calls are limited to prevent brute-force attacks.
+        quota:
+          requests: 10
+          window: 1m
+          per: user+database
+        throttled:
+          httpStatus: 429
+          errorType: OverLimitException
+          retryAfterHeader: Retry-After
+          retryAfterUnit: seconds
+
+      - scope: GetFeed method (per entity type)
+        description: >
+          GetFeed requests are rate-limited per user login and per entity type.
+          StatusData and LogRecord each have separate counters. The standard
+          limit is 1 request per second per entity, or up to 60 per minute.
+        quota:
+          requests: 1
+          window: 1s
+          per: user+database+entity
+        throttled:
+          httpStatus: 429
+          errorType: OverLimitException
+          retryAfterHeader: Retry-After
+          retryAfterUnit: seconds
+
+      - scope: Get method result limit
+        description: >
+          Get requests capped at 50,000 results per call for specified entities.
+          Responses exceeding 500 MB trigger an Over Limit Error regardless of record count.
+        quota:
+          records: 50000
+          per: request
+        throttled:
+          httpStatus: 429
+          errorType: OverLimitException
+
+    rateLimitHeaders:
+      - name: X-Rate-Limit-Limit
+        description: The rate limit period (e.g., "1s", "10m")
+      - name: X-Rate-Limit-Remaining
+        description: Number of requests remaining in the current window
+      - name: X-Rate-Limit-Reset
+        description: UTC datetime when the rate limit window resets
+      - name: Retry-After
+        description: Seconds until the rate limit resets; returned only on 429 responses
+
+    rateLimitedEntities:
+      - AnnotationLog
+      - DVIRLog
+      - ShipmentLog
+      - TrailerAttachment
+      - IoxAddOn
+      - CustomData
+      - DebugData
+      - BinaryData
+      - UserHosRuleSet
+      - DutyStatusLog
+      - FuelTaxDetail
+      - LogRecord
+      - StatusData
+      - FaultData
+      - Trip
+
+  - name: MyAdmin API
+    baseURL: https://myadmin.geotab.com/v2/MyAdminApi.ashx
+    rateLimits:
+      - scope: Global per-IP limit
+        description: A blanket restriction across all endpoints from the same source IP.
+        quota:
+          requests: 10000
+          window: 10m
+          per: ip-address
+        throttled:
+          httpStatus: 429
+
+      - scope: MyAdmin API endpoint default
+        description: Default limit for MyAdmin API endpoints without specific overrides.
+        quota:
+          requests: 5000
+          window: 1m
+          per: api-key
+        throttled:
+          httpStatus: 429
+
+      - scope: MyAdmin API hourly default
+        description: Default hourly limit for MyAdmin API endpoints.
+        quota:
+          requests: 100000
+          window: 1h
+          per: api-key
+        throttled:
+          httpStatus: 429
+
+      - scope: /v2/MyAdminApi.ashx endpoint
+        description: Specific limit for the v2 MyAdmin API endpoint.
+        quota:
+          requests: 375
+          window: 1m
+          per: api-key
+        throttled:
+          httpStatus: 429
+
+      - scope: /v2/MyAdminApi.ashx hourly
+        description: Hourly limit for the v2 MyAdmin API endpoint.
+        quota:
+          requests: 22000
+          window: 1h
+          per: api-key
+        throttled:
+          httpStatus: 429
+
+      - scope: /WebServices/MyGeotabApi.ashx endpoint
+        description: Specific limit for the MyGeotab API endpoint under MyAdmin.
+        quota:
+          requests: 300
+          window: 1m
+          per: api-key
+        throttled:
+          httpStatus: 429
+
+      - scope: GetOwnDatabases method
+        description: Specific limit for the GetOwnDatabases JSON-RPC method.
+        quota:
+          requests: 100
+          window: 15m
+          per: api-key
+        throttled:
+          httpStatus: 429
+
+      - scope: PostOrder method
+        description: Specific limit for the PostOrder JSON-RPC method.
+        quota:
+          requests: 100
+          window: 15m
+          per: api-key
+        throttled:
+          httpStatus: 429
+
+      - scope: GetDeviceTimelinesAsync method
+        description: Specific limit for the GetDeviceTimelinesAsync JSON-RPC method.
+        quota:
+          requests: 300
+          window: 15m
+          per: api-key
+        throttled:
+          httpStatus: 429
+
+      - scope: Data-based (adaptive) limit
+        description: Each data-returning method enforces its own data volume threshold.
+        quota:
+          records: 150000
+          window: 1m
+          per: method
+        throttled:
+          httpStatus: 429
+
+sources:
+  - https://www.geotab.com/blog/result-and-rate-limits/
+  - https://developers.geotab.com/myAdmin/guides/rateLimits/
