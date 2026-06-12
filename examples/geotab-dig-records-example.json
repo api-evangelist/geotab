@@ -1,0 +1,63 @@
+{
+  "title": "DIG Submit Records Request and Response",
+  "description": "Example showing how to submit a batch of mixed telematics records (GPS, Status, VIN) to the Geotab Data Intake Gateway.",
+  "request": {
+    "method": "POST",
+    "url": "https://dig.geotab.com/records",
+    "headers": {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    },
+    "body": [
+      {
+        "Type": "VinRecord",
+        "DateTime": "2024-03-15T14:00:00.000Z",
+        "SerialNo": "2396122106100",
+        "VehicleIdentificationNumber": "1HGBH41JXMN109186"
+      },
+      {
+        "Type": "GpsRecord",
+        "DateTime": "2024-03-15T14:01:00.000Z",
+        "SerialNo": "2396122106100",
+        "Latitude": 43.7315,
+        "Longitude": -79.7624,
+        "Speed": 65.4,
+        "IsIgnitionOn": true,
+        "IsGpsValid": true,
+        "IsAuxiliary1On": false,
+        "IsAuxiliary2On": false,
+        "IsAuxiliary3On": false,
+        "IsAuxiliary4On": false,
+        "IsAuxiliary5On": false,
+        "IsAuxiliary6On": false,
+        "IsAuxiliary7On": false,
+        "IsAuxiliary8On": false
+      },
+      {
+        "Type": "StatusRecord",
+        "DateTime": "2024-03-15T14:01:05.000Z",
+        "SerialNo": "2396122106100",
+        "Code": 12,
+        "Value": 85
+      },
+      {
+        "Type": "AccelerationRecord",
+        "DateTime": "2024-03-15T14:01:10.000Z",
+        "SerialNo": "2396122106100",
+        "X": 120,
+        "Y": -35,
+        "Z": 15
+      }
+    ]
+  },
+  "response": {
+    "status": 202,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "Error": [],
+      "Data": "feeac962-4496-4458-a489-e2d9b4ea12ec"
+    }
+  }
+}

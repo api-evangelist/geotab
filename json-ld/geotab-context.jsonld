@@ -1,0 +1,198 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "schema": "https://schema.org/",
+    "geotab": "https://developers.geotab.com/vocabulary#",
+
+    "Device": {
+      "@id": "geotab:Device",
+      "@type": "@id"
+    },
+    "SerialNo": {
+      "@id": "geotab:serialNo",
+      "@type": "xsd:string"
+    },
+    "Trip": {
+      "@id": "geotab:Trip",
+      "@type": "@id"
+    },
+    "Driver": {
+      "@id": "geotab:Driver",
+      "@type": "@id"
+    },
+    "BaseRecord": {
+      "@id": "geotab:BaseRecord",
+      "@type": "@id"
+    },
+    "GpsRecord": {
+      "@id": "geotab:GpsRecord",
+      "@type": "@id"
+    },
+    "StatusRecord": {
+      "@id": "geotab:StatusRecord",
+      "@type": "@id"
+    },
+    "GenericStatusRecord": {
+      "@id": "geotab:GenericStatusRecord",
+      "@type": "@id"
+    },
+    "AccelerationRecord": {
+      "@id": "geotab:AccelerationRecord",
+      "@type": "@id"
+    },
+    "J1939FaultRecord": {
+      "@id": "geotab:J1939FaultRecord",
+      "@type": "@id"
+    },
+    "J1708FaultRecord": {
+      "@id": "geotab:J1708FaultRecord",
+      "@type": "@id"
+    },
+    "ObdiiFaultRecord": {
+      "@id": "geotab:ObdiiFaultRecord",
+      "@type": "@id"
+    },
+    "VinRecord": {
+      "@id": "geotab:VinRecord",
+      "@type": "@id"
+    },
+    "BinaryRecord": {
+      "@id": "geotab:BinaryRecord",
+      "@type": "@id"
+    },
+    "BluetoothRecord": {
+      "@id": "geotab:BluetoothRecord",
+      "@type": "@id"
+    },
+    "DriverChangeRecord": {
+      "@id": "geotab:DriverChangeRecord",
+      "@type": "@id"
+    },
+    "InvalidRecord": {
+      "@id": "geotab:InvalidRecord",
+      "@type": "@id"
+    },
+
+    "Type": {
+      "@id": "geotab:recordType",
+      "@type": "xsd:string"
+    },
+    "DateTime": {
+      "@id": "geotab:dateTime",
+      "@type": "xsd:dateTime"
+    },
+    "Latitude": {
+      "@id": "schema:latitude",
+      "@type": "xsd:float"
+    },
+    "Longitude": {
+      "@id": "schema:longitude",
+      "@type": "xsd:float"
+    },
+    "Speed": {
+      "@id": "geotab:speed",
+      "@type": "xsd:float"
+    },
+    "IsIgnitionOn": {
+      "@id": "geotab:isIgnitionOn",
+      "@type": "xsd:boolean"
+    },
+    "IsGpsValid": {
+      "@id": "geotab:isGpsValid",
+      "@type": "xsd:boolean"
+    },
+    "Code": {
+      "@id": "geotab:diagnosticCode",
+      "@type": "xsd:integer"
+    },
+    "Value": {
+      "@id": "geotab:diagnosticValue",
+      "@type": "xsd:integer"
+    },
+    "FaultStateActive": {
+      "@id": "geotab:faultStateActive",
+      "@type": "xsd:boolean"
+    },
+    "VehicleIdentificationNumber": {
+      "@id": "schema:vehicleIdentificationNumber",
+      "@type": "xsd:string"
+    },
+    "SuspectParameterNumber": {
+      "@id": "geotab:suspectParameterNumber",
+      "@type": "xsd:integer"
+    },
+    "FailureModeIdentifier": {
+      "@id": "geotab:failureModeIdentifier",
+      "@type": "xsd:integer"
+    },
+    "OccurrenceCount": {
+      "@id": "geotab:occurrenceCount",
+      "@type": "xsd:integer"
+    },
+    "SourceAddress": {
+      "@id": "geotab:sourceAddress",
+      "@type": "xsd:integer"
+    },
+    "X": {
+      "@id": "geotab:accelerationX",
+      "@type": "xsd:integer"
+    },
+    "Y": {
+      "@id": "geotab:accelerationY",
+      "@type": "xsd:integer"
+    },
+    "Z": {
+      "@id": "geotab:accelerationZ",
+      "@type": "xsd:integer"
+    },
+    "BearerToken": {
+      "@id": "geotab:bearerToken",
+      "@type": "@id"
+    },
+    "RefreshToken": {
+      "@id": "geotab:refreshToken",
+      "@type": "@id"
+    },
+    "TokenString": {
+      "@id": "geotab:tokenString",
+      "@type": "xsd:string"
+    },
+    "Expires": {
+      "@id": "geotab:tokenExpires",
+      "@type": "xsd:dateTime"
+    },
+    "Created": {
+      "@id": "geotab:tokenCreated",
+      "@type": "xsd:dateTime"
+    },
+    "Authenticated": {
+      "@id": "geotab:authenticated",
+      "@type": "xsd:boolean"
+    },
+    "UserId": {
+      "@id": "geotab:userId",
+      "@type": "xsd:string"
+    },
+    "Cause": {
+      "@id": "geotab:rejectionCause",
+      "@type": "xsd:string"
+    },
+    "Address": {
+      "@id": "geotab:bluetoothAddress",
+      "@type": "xsd:string"
+    },
+    "DataType": {
+      "@id": "geotab:bluetoothDataType",
+      "@type": "xsd:integer"
+    },
+    "DriverId": {
+      "@id": "geotab:driverId",
+      "@type": "xsd:string"
+    },
+    "KeyType": {
+      "@id": "geotab:keyType",
+      "@type": "xsd:integer"
+    }
+  }
+}

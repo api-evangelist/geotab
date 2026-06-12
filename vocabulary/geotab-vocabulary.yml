@@ -1,0 +1,137 @@
+vocabulary:
+  name: Geotab Vocabulary
+  description: Domain vocabulary for the Geotab fleet telematics platform covering MyGeotab API, MyAdmin API, and Data Intake Gateway concepts.
+  provider: geotab
+  version: "1.0.0"
+
+terms:
+  # Core Platform
+  - term: MyGeotab
+    definition: Geotab's web-based fleet management platform and primary API surface, accessible at my.geotab.com.
+    domain: platform
+
+  - term: MyAdmin
+    definition: Geotab's administrative platform for resellers and partners to manage databases, provisioning, orders, and billing.
+    domain: platform
+
+  - term: DataIntakeGateway
+    abbreviation: DIG
+    definition: Geotab's ingestion API for pushing telematics records from third-party devices directly into the MyGeotab platform using JWT authentication.
+    domain: platform
+
+  - term: MyGeotab API
+    definition: JSON-RPC 2.0 API exposed at /apiv1 supporting Get, Add, Set, and Remove operations across all fleet entities.
+    domain: api
+
+  - term: GetFeed
+    definition: A MyGeotab API method for real-time streaming retrieval of data changes since a given feed version token.
+    domain: api
+
+  # Authentication
+  - term: SessionToken
+    definition: Short-lived credential returned by the MyGeotab Authenticate call, used to authorize subsequent API requests.
+    domain: authentication
+
+  - term: BearerToken
+    definition: JWT access token returned by the DIG authenticate endpoint, required in the Authorization header for all protected DIG endpoints.
+    domain: authentication
+
+  - term: RefreshToken
+    definition: Long-lived token returned alongside the BearerToken, used to obtain a new BearerToken without re-entering credentials.
+    domain: authentication
+
+  # Fleet Entities
+  - term: Device
+    definition: A Geotab GO telematics device installed in a vehicle, identified by a SerialNo.
+    domain: fleet
+
+  - term: SerialNo
+    definition: Unique identifier string for a Geotab telematics device (e.g., "2396122106100").
+    domain: fleet
+
+  - term: Trip
+    definition: A recorded journey from engine start to engine stop for a tracked vehicle.
+    domain: fleet
+
+  - term: Driver
+    definition: A person assigned to operate a vehicle, identified in the system for behavior and HOS tracking.
+    domain: fleet
+
+  # Data Records
+  - term: GpsRecord
+    definition: A DIG record containing latitude, longitude, speed, ignition state, and auxiliary flags for a device at a point in time.
+    domain: data
+
+  - term: StatusRecord
+    definition: A DIG record encoding a numeric diagnostic value against a specific diagnostic code for a device.
+    domain: data
+
+  - term: GenericStatusRecord
+    definition: A specialization of StatusRecord supporting a broader set of diagnostic codes for telematics devices.
+    domain: data
+
+  - term: AccelerationRecord
+    definition: A DIG record capturing X, Y, Z axis accelerometer readings in milli-g from a telematics device.
+    domain: data
+
+  - term: FaultRecord
+    definition: A DIG record capturing a diagnostic trouble code (DTC) from a vehicle's fault systems (J1939, J1708, OBD-II, or generic).
+    domain: data
+
+  - term: J1939FaultRecord
+    definition: A DIG fault record encoding SAE J1939 suspect parameter number (SPN), failure mode identifier (FMI), and warning lamp states.
+    domain: data
+
+  - term: J1708FaultRecord
+    definition: A DIG fault record encoding SAE J1708 message ID, parameter ID, subsystem ID, and failure mode identifier.
+    domain: data
+
+  - term: ObdiiFaultRecord
+    definition: A DIG fault record encoding an OBD-II diagnostic trouble code string and fault state.
+    domain: data
+
+  - term: VinRecord
+    definition: A DIG record associating a Vehicle Identification Number (VIN) with a device serial number.
+    domain: data
+
+  - term: BinaryRecord
+    definition: A DIG record supporting arbitrary Base64-encoded binary payloads up to 32745 bytes.
+    domain: data
+
+  - term: BluetoothRecord
+    definition: A DIG record for Bluetooth sensor readings, including MAC address, data type, and floating-point value.
+    domain: data
+
+  - term: DriverChangeRecord
+    definition: A DIG record capturing a driver key scan event, associating a driver ID and key type with a device at a timestamp.
+    domain: data
+
+  - term: InvalidRecord
+    definition: A DIG response object describing a submitted record that was rejected, including the original record, rejection cause, and timestamp.
+    domain: data
+
+  # Compliance
+  - term: ELD
+    abbreviation: ELD
+    definition: Electronic Logging Device — federally mandated device for recording Hours of Service (HOS) for commercial drivers.
+    domain: compliance
+
+  - term: HOS
+    abbreviation: HOS
+    definition: Hours of Service — FMCSA regulations governing the maximum hours a commercial driver may operate a vehicle.
+    domain: compliance
+
+  # Diagnostics
+  - term: DiagnosticCode
+    definition: An integer identifier mapping to a specific vehicle sensor or parameter within the MyGeotab diagnostic catalog.
+    domain: diagnostics
+
+  - term: SuspectParameterNumber
+    abbreviation: SPN
+    definition: SAE J1939 identifier for a specific data element associated with a diagnostic trouble code.
+    domain: diagnostics
+
+  - term: FailureModeIdentifier
+    abbreviation: FMI
+    definition: SAE J1939/J1708 code indicating the type of failure detected for a given parameter.
+    domain: diagnostics

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api-evangelist.github.io/geotab/json-schema/geotab-status-record-schema.json",
+  "title": "StatusRecord",
+  "description": "A DIG record encoding a numeric diagnostic value against a specific diagnostic code for a Geotab telematics device.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/BaseRecord"
+    },
+    {
+      "properties": {
+        "Code": {
+          "type": "integer",
+          "description": "The diagnostic code (of type status). Valid range: <=127 or >=2000."
+        },
+        "Value": {
+          "type": "integer",
+          "description": "The value of the diagnostic. Valid values depend on diagnostic code."
+        }
+      },
+      "required": ["Code", "Value"]
+    }
+  ],
+  "$defs": {
+    "BaseRecord": {
+      "type": "object",
+      "description": "Common fields required on all DIG records.",
+      "required": ["Type", "DateTime", "SerialNo"],
+      "properties": {
+        "Type": {
+          "type": "string",
+          "const": "StatusRecord",
+          "description": "Indicates the type of record."
+        },
+        "DateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date and time of the record in ISO 8601 UTC format."
+        },
+        "SerialNo": {
+          "type": "string",
+          "description": "Device serial number."
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "examples": [
+    {
+      "Type": "StatusRecord",
+      "DateTime": "2024-03-15T14:30:01.500Z",
+      "SerialNo": "8378832278466",
+      "Code": 12,
+      "Value": 5
+    }
+  ]
+}

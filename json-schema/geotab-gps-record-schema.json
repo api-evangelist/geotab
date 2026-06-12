@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api-evangelist.github.io/geotab/json-schema/geotab-gps-record-schema.json",
+  "title": "GpsRecord",
+  "description": "A DIG record containing latitudinal and longitudinal location data, speed (km/h), ignition state, GPS validity, and auxiliary flags for a Geotab telematics device.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/BaseRecord"
+    },
+    {
+      "properties": {
+        "Latitude": {
+          "type": "number",
+          "description": "The latitude in decimal degrees."
+        },
+        "Longitude": {
+          "type": "number",
+          "description": "The longitude in decimal degrees."
+        },
+        "Speed": {
+          "type": "number",
+          "description": "The speed in kilometers per hour."
+        },
+        "IsIgnitionOn": {
+          "type": "boolean",
+          "description": "A value indicating whether the ignition is on."
+        },
+        "IsGpsValid": {
+          "type": "boolean",
+          "description": "A value indicating whether the GPS fix is valid."
+        },
+        "IsAuxiliary1On": { "type": "boolean" },
+        "IsAuxiliary2On": { "type": "boolean" },
+        "IsAuxiliary3On": { "type": "boolean" },
+        "IsAuxiliary4On": { "type": "boolean" },
+        "IsAuxiliary5On": { "type": "boolean" },
+        "IsAuxiliary6On": { "type": "boolean" },
+        "IsAuxiliary7On": { "type": "boolean" },
+        "IsAuxiliary8On": { "type": "boolean" }
+      }
+    }
+  ],
+  "$defs": {
+    "BaseRecord": {
+      "type": "object",
+      "description": "Common fields required on all DIG records.",
+      "required": ["Type", "DateTime", "SerialNo"],
+      "properties": {
+        "Type": {
+          "type": "string",
+          "const": "GpsRecord",
+          "description": "Indicates the type of record."
+        },
+        "DateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date and time of the record in ISO 8601 UTC format."
+        },
+        "SerialNo": {
+          "type": "string",
+          "description": "Device serial number."
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "examples": [
+    {
+      "Type": "GpsRecord",
+      "DateTime": "2024-03-15T14:30:00.000Z",
+      "SerialNo": "2396122106100",
+      "Latitude": 43.7315,
+      "Longitude": -79.7624,
+      "Speed": 65.4,
+      "IsIgnitionOn": true,
+      "IsGpsValid": true,
+      "IsAuxiliary1On": false,
+      "IsAuxiliary2On": false,
+      "IsAuxiliary3On": false,
+      "IsAuxiliary4On": false,
+      "IsAuxiliary5On": false,
+      "IsAuxiliary6On": false,
+      "IsAuxiliary7On": false,
+      "IsAuxiliary8On": false
+    }
+  ]
+}

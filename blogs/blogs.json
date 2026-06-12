@@ -1,0 +1,12 @@
+{
+  "blogURL": "https://www.geotab.com/blog/",
+  "blogRSS": null,
+  "rssConfirmed": false,
+  "rssProbed": [
+    "https://www.geotab.com/blog/feed/",
+    "https://www.geotab.com/feed/"
+  ],
+  "note": "No RSS or Atom feed discovered as of 2026-06-12. The Geotab blog at geotab.com/blog/ does not expose a machine-readable feed link.",
+  "lastChecked": "2026-06-12",
+  "posts": []
+}

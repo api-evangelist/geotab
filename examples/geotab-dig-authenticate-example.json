@@ -1,0 +1,38 @@
+{
+  "title": "DIG Authenticate Request and Response",
+  "description": "Example showing how to authenticate with the Geotab Data Intake Gateway API to obtain bearer and refresh tokens.",
+  "request": {
+    "method": "POST",
+    "url": "https://dig.geotab.com/authentication/authenticate",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "Username": "dig@yourcompany.geotab.com",
+      "Password": "your-dig-password"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "Error": [],
+      "Data": {
+        "Authenticated": true,
+        "UserId": "dig@yourcompany.geotab.com",
+        "BearerToken": {
+          "TokenString": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImRpZ0BnZW8udGFiIiwibmJmIjoxNjEyODQ2ODEwLCJleHAiOjE2MTMxMDYwMTAsImlhdCI6MTYxMjg0NjgxMH0.pXS0ehnRCwZSzGNLSYGlh_oJCnXieFZBu7HBV6y0b5Q",
+          "Created": "2024-03-15T14:00:00",
+          "Expires": "2024-03-16T14:00:00"
+        },
+        "RefreshToken": {
+          "TokenString": "m=+tunBX6uDBY/Rk9OUQeZdCdmaQgzPHdGvVH2B3cuCXwjADdqvD44vyCr0Z",
+          "Created": "2024-03-15T14:00:00",
+          "Expires": "2024-04-15T14:00:00"
+        }
+      }
+    }
+  }
+}

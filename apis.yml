@@ -48,6 +48,37 @@ apis:
         url: https://developers.geotab.com/myGeotab/introduction/
       - type: APIReference
         url: https://geotab.github.io/sdk/software/api/reference/
+      - type: JSONSchema
+        url: json-schema/geotab-gps-record-schema.json
+      - type: JSONSchema
+        url: json-schema/geotab-status-record-schema.json
+    contact:
+      - FN: Geotab Developer Support
+        url: https://developers.geotab.com/
+
+  - aid: geotab:data-intake-gateway
+    name: Data Intake Gateway API
+    type: REST
+    description: >
+      The Geotab Data Intake Gateway (DIG) API accepts telematics records from
+      third-party devices directly into the MyGeotab platform. It uses JWT bearer
+      token authentication and supports 12 distinct record types including GPS,
+      acceleration, fault codes, driver changes, and VIN data.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://github.com/Geotab/data-intake-gateway
+    baseURL: https://dig.geotab.com
+    tags:
+      - Fleet Telematics
+      - Data Ingestion
+      - IoT
+      - GPS
+    properties:
+      - type: OpenAPI
+        url: openapi/geotab-data-intake-gateway-openapi.yml
+      - type: Examples
+        url: examples/geotab-dig-authenticate-example.json
+      - type: Examples
+        url: examples/geotab-dig-records-example.json
     contact:
       - FN: Geotab Developer Support
         url: https://developers.geotab.com/
@@ -97,6 +128,12 @@ common:
     url: rate-limits/geotab-rate-limits.yml
   - type: FinOps
     url: finops/geotab-finops.yml
+  - type: Vocabulary
+    url: vocabulary/geotab-vocabulary.yml
+  - type: JSONLDContext
+    url: json-ld/geotab-context.jsonld
+  - type: Blogs
+    url: blogs/blogs.json
 
 maintainers:
   - FN: Kin Lane
