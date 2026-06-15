@@ -1,0 +1,1055 @@
+"""
+Geotab GraphQL Schema
+Conceptual schema derived from the Geotab MyGeotab REST API.
+Covers fleet management, vehicle tracking, trips, exceptions, diagnostics,
+engine data, driver behavior, hours of service compliance, and fuel analytics.
+"""
+
+# ─────────────────────────────────────────────
+# Scalars
+# ─────────────────────────────────────────────
+
+scalar DateTime
+scalar Date
+scalar JSON
+
+# ─────────────────────────────────────────────
+# Enums
+# ─────────────────────────────────────────────
+
+"""Status of a device in the fleet."""
+enum DeviceStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+"""Category of a vehicle/device."""
+enum DeviceType {
+  GO_DEVICE
+  CUSTOM_DEVICE
+  CUSTOM_VEHICLE_DEVICE
+  NONE
+}
+
+"""Type of exception event."""
+enum ExceptionType {
+  SPEEDING
+  HARSH_ACCELERATION
+  HARSH_BRAKING
+  HARSH_CORNERING
+  SEATBELT
+  IDLING
+  AFTER_HOURS
+  CUSTOM
+}
+
+"""Severity level of a diagnostic fault."""
+enum DiagnosticSeverity {
+  INFORMATIONAL
+  WARNING
+  FAILURE
+  CRITICAL
+}
+
+"""Driver activity type during a trip."""
+enum DriverActivity {
+  DRIVING
+  ON_DUTY
+  OFF_DUTY
+  SLEEPER_BERTH
+  PERSONAL_CONVEYANCE
+  YARD_MOVES
+}
+
+"""Measurement unit system."""
+enum UnitSystem {
+  METRIC
+  IMPERIAL
+}
+
+"""HOS (Hours of Service) ruleset."""
+enum HosRuleset {
+  USA_PROPERTY_60_7
+  USA_PROPERTY_70_8
+  CANADA_60_7
+  CANADA_70_8
+  OILFIELD
+  OILFIELD_SHORT_HAUL
+  AGRICULTURE
+  CUSTOM
+}
+
+"""Direction of sort."""
+enum SortDirection {
+  ASC
+  DESC
+}
+
+"""Fuel type."""
+enum FuelType {
+  GASOLINE
+  DIESEL
+  ELECTRIC
+  HYBRID
+  HYDROGEN
+  NATURAL_GAS
+  PROPANE
+  UNKNOWN
+}
+
+"""Zone type."""
+enum ZoneType {
+  CUSTOMER
+  OFFICE
+  HOME
+  DEPOT
+  SERVICE_AREA
+  GEOFENCE
+  CUSTOM
+}
+
+"""Alert notification type."""
+enum AlertType {
+  EMAIL
+  SMS
+  PUSH_NOTIFICATION
+  IN_APP
+}
+
+"""Status of a work order."""
+enum WorkOrderStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+# ─────────────────────────────────────────────
+# Common / Shared Types
+# ─────────────────────────────────────────────
+
+"""Geographic coordinate pair."""
+type Coordinate {
+  latitude: Float!
+  longitude: Float!
+}
+
+"""Bounding box for geographic queries."""
+input BoundingBox {
+  northEast: CoordinateInput!
+  southWest: CoordinateInput!
+}
+
+"""Input for a coordinate pair."""
+input CoordinateInput {
+  latitude: Float!
+  longitude: Float!
+}
+
+"""Pagination information."""
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+  totalCount: Int
+}
+
+"""Standard paginated connection wrapper."""
+type Connection {
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""A key-value pair used for custom data."""
+type KeyValuePair {
+  key: String!
+  value: String
+}
+
+"""Address representation."""
+type Address {
+  street: String
+  city: String
+  state: String
+  country: String
+  postalCode: String
+  formattedAddress: String
+}
+
+# ─────────────────────────────────────────────
+# Device / Vehicle Types
+# ─────────────────────────────────────────────
+
+"""A Geotab tracking device installed in a vehicle."""
+type Device {
+  id: ID!
+  name: String!
+  serialNumber: String
+  deviceType: DeviceType!
+  status: DeviceStatus!
+  productId: Int
+  licensePlate: String
+  vehicleIdentificationNumber: String
+  odometer: Float
+  engineHours: Float
+  fuelType: FuelType
+  groups: [Group!]
+  activeFrom: DateTime
+  activeTo: DateTime
+  customProperties: [KeyValuePair!]
+  lastKnownLocation: GPSRecord
+  comment: String
+}
+
+"""Paginated list of devices."""
+type DeviceConnection {
+  nodes: [Device!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""Input for creating or updating a device."""
+input DeviceInput {
+  name: String!
+  serialNumber: String
+  licensePlate: String
+  vehicleIdentificationNumber: String
+  fuelType: FuelType
+  comment: String
+  groups: [ID!]
+}
+
+# ─────────────────────────────────────────────
+# GPS / Location Types
+# ─────────────────────────────────────────────
+
+"""A GPS location record for a device."""
+type GPSRecord {
+  id: ID!
+  device: Device!
+  dateTime: DateTime!
+  coordinate: Coordinate!
+  speed: Float
+  bearing: Float
+  altitude: Float
+  isGPSValid: Boolean!
+  address: Address
+  odometer: Float
+  engineHours: Float
+}
+
+"""Paginated list of GPS records."""
+type GPSRecordConnection {
+  nodes: [GPSRecord!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+# ─────────────────────────────────────────────
+# Trip Types
+# ─────────────────────────────────────────────
+
+"""A trip made by a device/vehicle."""
+type Trip {
+  id: ID!
+  device: Device!
+  driver: Driver
+  startDateTime: DateTime!
+  stopDateTime: DateTime
+  startCoordinate: Coordinate!
+  stopCoordinate: Coordinate
+  startAddress: Address
+  stopAddress: Address
+  distance: Float
+  drivingDuration: Int
+  idlingDuration: Int
+  maximumSpeed: Float
+  averageSpeed: Float
+  fuelUsed: Float
+  nextTripStart: DateTime
+  workDistance: Float
+  afterHoursDistance: Float
+  afterHoursDrivingDuration: Int
+}
+
+"""Paginated list of trips."""
+type TripConnection {
+  nodes: [Trip!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+# ─────────────────────────────────────────────
+# Driver Types
+# ─────────────────────────────────────────────
+
+"""A driver in the Geotab system."""
+type Driver {
+  id: ID!
+  name: String!
+  employeeNumber: String
+  driverGroups: [Group!]
+  nfcKey: String
+  hosRuleset: HosRuleset
+  activeFrom: DateTime
+  activeTo: DateTime
+  licenseNumber: String
+  licenseProvince: String
+  comment: String
+  email: String
+  phoneNumber: String
+}
+
+"""Paginated list of drivers."""
+type DriverConnection {
+  nodes: [Driver!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""Input for creating or updating a driver."""
+input DriverInput {
+  name: String!
+  employeeNumber: String
+  hosRuleset: HosRuleset
+  licenseNumber: String
+  licenseProvince: String
+  email: String
+  phoneNumber: String
+  comment: String
+}
+
+# ─────────────────────────────────────────────
+# Exception / Event Types
+# ─────────────────────────────────────────────
+
+"""An exception event triggered by a rule violation."""
+type ExceptionEvent {
+  id: ID!
+  device: Device!
+  driver: Driver
+  rule: Rule!
+  activeFrom: DateTime!
+  activeTo: DateTime
+  coordinate: Coordinate
+  address: Address
+  distance: Float
+  duration: Int
+  state: ExceptionEventState!
+}
+
+"""State of an exception event."""
+type ExceptionEventState {
+  id: ID!
+  name: String!
+}
+
+"""Paginated list of exception events."""
+type ExceptionEventConnection {
+  nodes: [ExceptionEvent!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""A rule that generates exception events."""
+type Rule {
+  id: ID!
+  name: String!
+  comment: String
+  baseType: ExceptionType
+  groups: [Group!]
+  activeFrom: DateTime
+  activeTo: DateTime
+  condition: RuleCondition
+  activeDefaultDuration: Int
+}
+
+"""A condition definition attached to a rule."""
+type RuleCondition {
+  id: ID!
+  conditionType: String!
+  value: Float
+  unit: String
+  subConditions: [RuleCondition!]
+}
+
+"""Paginated list of rules."""
+type RuleConnection {
+  nodes: [Rule!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+# ─────────────────────────────────────────────
+# Diagnostic / Engine Types
+# ─────────────────────────────────────────────
+
+"""A diagnostic definition (e.g., engine RPM, coolant temp)."""
+type Diagnostic {
+  id: ID!
+  name: String!
+  code: Int
+  diagnosticType: String
+  source: DiagnosticSource
+  unitOfMeasure: UnitOfMeasure
+  groups: [Group!]
+}
+
+"""Source/protocol of a diagnostic."""
+type DiagnosticSource {
+  id: ID!
+  name: String!
+}
+
+"""Unit of measure for a diagnostic value."""
+type UnitOfMeasure {
+  id: ID!
+  name: String!
+  unitSymbol: String
+}
+
+"""A status data record (engine/sensor reading)."""
+type StatusData {
+  id: ID!
+  device: Device!
+  diagnostic: Diagnostic!
+  dateTime: DateTime!
+  data: Float
+}
+
+"""Paginated list of status data records."""
+type StatusDataConnection {
+  nodes: [StatusData!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""A fault data record (DTC/fault code)."""
+type FaultData {
+  id: ID!
+  device: Device!
+  diagnostic: Diagnostic!
+  dateTime: DateTime!
+  count: Int
+  severity: DiagnosticSeverity
+  failureModeIdentifier: FailureModeIdentifier
+  controller: Controller
+  active: Boolean!
+}
+
+"""Failure mode identifier for a fault."""
+type FailureModeIdentifier {
+  id: ID!
+  name: String!
+  code: Int
+}
+
+"""Controller/module that generated a fault."""
+type Controller {
+  id: ID!
+  name: String!
+  code: Int
+  source: DiagnosticSource
+}
+
+"""Paginated list of fault data records."""
+type FaultDataConnection {
+  nodes: [FaultData!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+# ─────────────────────────────────────────────
+# HOS / ELD Types
+# ─────────────────────────────────────────────
+
+"""A driver's duty status change log entry."""
+type DutyStatusLog {
+  id: ID!
+  driver: Driver!
+  device: Device
+  dateTime: DateTime!
+  status: DriverActivity!
+  coordinate: Coordinate
+  location: String
+  annotation: String
+  malfunction: Boolean
+  diagnostic: Boolean
+  origin: String
+  certificationDate: DateTime
+  sequence: Int
+}
+
+"""Paginated list of duty status logs."""
+type DutyStatusLogConnection {
+  nodes: [DutyStatusLog!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""HOS violation event."""
+type HosViolation {
+  id: ID!
+  driver: Driver!
+  dateTime: DateTime!
+  violationType: String!
+  duration: Int
+  description: String
+}
+
+"""Paginated list of HOS violations."""
+type HosViolationConnection {
+  nodes: [HosViolation!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+# ─────────────────────────────────────────────
+# Fuel Types
+# ─────────────────────────────────────────────
+
+"""A fuel transaction record."""
+type FuelTransaction {
+  id: ID!
+  device: Device
+  driver: Driver
+  dateTime: DateTime!
+  amount: Float
+  cost: Float
+  currency: String
+  odometer: Float
+  vehicleIdentificationNumber: String
+  fuelType: FuelType
+  description: String
+  productType: String
+  cardNumber: String
+  address: Address
+  coordinate: Coordinate
+}
+
+"""Paginated list of fuel transactions."""
+type FuelTransactionConnection {
+  nodes: [FuelTransaction!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""Fuel usage summary for a device over a period."""
+type FuelUsageSummary {
+  device: Device!
+  fromDate: DateTime!
+  toDate: DateTime!
+  totalFuelUsed: Float
+  totalDistance: Float
+  fuelEfficiency: Float
+  idleFuelUsed: Float
+  fuelCost: Float
+  currency: String
+}
+
+# ─────────────────────────────────────────────
+# Zone / Geofence Types
+# ─────────────────────────────────────────────
+
+"""A geographic zone (geofence)."""
+type Zone {
+  id: ID!
+  name: String!
+  comment: String
+  zoneTypes: [ZoneType!]
+  groups: [Group!]
+  activeFrom: DateTime
+  activeTo: DateTime
+  points: [Coordinate!]
+  centroid: Coordinate
+  radius: Float
+  mustIdentifyStops: Boolean
+  stopPointThreshold: Int
+  displayed: Boolean
+}
+
+"""Paginated list of zones."""
+type ZoneConnection {
+  nodes: [Zone!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""Input for creating or updating a zone."""
+input ZoneInput {
+  name: String!
+  comment: String
+  zoneTypes: [ZoneType!]
+  points: [CoordinateInput!]!
+  groups: [ID!]
+  mustIdentifyStops: Boolean
+}
+
+# ─────────────────────────────────────────────
+# Group Types
+# ─────────────────────────────────────────────
+
+"""An organizational group in MyGeotab."""
+type Group {
+  id: ID!
+  name: String!
+  parent: Group
+  children: [Group!]
+  color: String
+  reference: String
+  comments: String
+}
+
+"""Paginated list of groups."""
+type GroupConnection {
+  nodes: [Group!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+# ─────────────────────────────────────────────
+# User / Security Types
+# ─────────────────────────────────────────────
+
+"""A MyGeotab user."""
+type User {
+  id: ID!
+  name: String!
+  firstName: String
+  lastName: String
+  email: String
+  employeeNumber: String
+  groups: [Group!]
+  securityGroups: [SecurityGroup!]
+  isDriver: Boolean
+  language: String
+  timeZoneId: String
+  unitSystem: UnitSystem
+  activeFrom: DateTime
+  activeTo: DateTime
+  comment: String
+  phoneNumber: String
+}
+
+"""A security role/group defining permissions."""
+type SecurityGroup {
+  id: ID!
+  name: String!
+  securityFilters: [SecurityFilter!]
+}
+
+"""An individual security permission filter."""
+type SecurityFilter {
+  id: ID!
+  securityIdentifier: String!
+  isAdd: Boolean!
+  isView: Boolean!
+  isEdit: Boolean!
+  isRemove: Boolean!
+}
+
+"""Paginated list of users."""
+type UserConnection {
+  nodes: [User!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+# ─────────────────────────────────────────────
+# Alert / Notification Types
+# ─────────────────────────────────────────────
+
+"""An alert notification configuration."""
+type AlertNotification {
+  id: ID!
+  name: String!
+  rule: Rule!
+  recipients: [AlertRecipient!]
+  alertType: AlertType!
+  activeFrom: DateTime
+  activeTo: DateTime
+}
+
+"""A recipient of an alert notification."""
+type AlertRecipient {
+  id: ID!
+  user: User
+  email: String
+  phoneNumber: String
+  alertType: AlertType!
+}
+
+# ─────────────────────────────────────────────
+# Route / Dispatch Types
+# ─────────────────────────────────────────────
+
+"""A planned route for a vehicle."""
+type Route {
+  id: ID!
+  name: String!
+  comment: String
+  routePlanItems: [RoutePlanItem!]
+  groups: [Group!]
+}
+
+"""A stop/waypoint on a route."""
+type RoutePlanItem {
+  id: ID!
+  zone: Zone
+  sequence: Int!
+  plannedDateTime: DateTime
+  passengerCount: Int
+}
+
+"""A work order assigned to a vehicle or driver."""
+type WorkOrder {
+  id: ID!
+  workOrderId: String!
+  device: Device
+  driver: Driver
+  status: WorkOrderStatus!
+  scheduledDateTime: DateTime
+  completedDateTime: DateTime
+  route: Route
+  description: String
+  notes: String
+}
+
+"""Paginated list of work orders."""
+type WorkOrderConnection {
+  nodes: [WorkOrder!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+# ─────────────────────────────────────────────
+# Maintenance Types
+# ─────────────────────────────────────────────
+
+"""A maintenance record for a device/vehicle."""
+type MaintenanceRecord {
+  id: ID!
+  device: Device!
+  description: String!
+  dateTime: DateTime!
+  odometer: Float
+  engineHours: Float
+  cost: Float
+  currency: String
+  vendor: String
+  notes: String
+}
+
+"""A maintenance reminder for scheduled service."""
+type MaintenanceReminder {
+  id: ID!
+  device: Device!
+  name: String!
+  description: String
+  nextServiceDateTime: DateTime
+  nextServiceOdometer: Float
+  nextServiceEngineHours: Float
+  isCompleted: Boolean!
+}
+
+# ─────────────────────────────────────────────
+# Trailer / Asset Types
+# ─────────────────────────────────────────────
+
+"""A trailer asset tracked in the system."""
+type Trailer {
+  id: ID!
+  name: String!
+  licensePlate: String
+  vin: String
+  groups: [Group!]
+  comment: String
+  activeFrom: DateTime
+  activeTo: DateTime
+}
+
+"""A pairing between a tractor device and a trailer."""
+type TrailerAttachment {
+  id: ID!
+  trailer: Trailer!
+  device: Device!
+  activeFrom: DateTime!
+  activeTo: DateTime
+}
+
+# ─────────────────────────────────────────────
+# Driver Score / Behavior Types
+# ─────────────────────────────────────────────
+
+"""Aggregated driver behavior score over a period."""
+type DriverScore {
+  driver: Driver!
+  fromDate: Date!
+  toDate: Date!
+  overallScore: Float
+  speedingScore: Float
+  harshBrakingScore: Float
+  harshAccelerationScore: Float
+  harshCorneringScore: Float
+  idlingScore: Float
+  seatbeltScore: Float
+  totalTrips: Int
+  totalDistance: Float
+  totalDrivingDuration: Int
+}
+
+# ─────────────────────────────────────────────
+# Report / Summary Types
+# ─────────────────────────────────────────────
+
+"""A vehicle utilization summary."""
+type VehicleUtilizationSummary {
+  device: Device!
+  fromDate: DateTime!
+  toDate: DateTime!
+  totalDrivingTime: Int
+  totalIdleTime: Int
+  totalDistance: Float
+  totalTrips: Int
+  workDays: Int
+  utilizationPercent: Float
+}
+
+"""A summary of speeding events."""
+type SpeedingEventSummary {
+  device: Device!
+  driver: Driver
+  fromDate: DateTime!
+  toDate: DateTime!
+  totalEvents: Int!
+  totalDuration: Int
+  totalDistance: Float
+  maximumSpeed: Float
+  averageExcessSpeed: Float
+}
+
+# ─────────────────────────────────────────────
+# TextMessage / Messaging Types
+# ─────────────────────────────────────────────
+
+"""A text message sent to or from a device."""
+type TextMessage {
+  id: ID!
+  device: Device!
+  user: User
+  sent: DateTime!
+  message: String!
+  isDirectionToVehicle: Boolean!
+  messageContent: MessageContent
+  replied: DateTime
+  replyMessage: String
+}
+
+"""Content/payload of a text message."""
+type MessageContent {
+  contentType: String!
+  message: String
+  isDeliveryRequired: Boolean
+}
+
+"""Paginated list of text messages."""
+type TextMessageConnection {
+  nodes: [TextMessage!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+# ─────────────────────────────────────────────
+# Filter Input Types
+# ─────────────────────────────────────────────
+
+"""Filters for device queries."""
+input DeviceFilter {
+  ids: [ID!]
+  name: String
+  status: DeviceStatus
+  groups: [ID!]
+  fromDate: DateTime
+  toDate: DateTime
+}
+
+"""Filters for trip queries."""
+input TripFilter {
+  deviceIds: [ID!]
+  driverIds: [ID!]
+  fromDate: DateTime!
+  toDate: DateTime!
+  minimumDistance: Float
+  includeOverlappedTrips: Boolean
+}
+
+"""Filters for exception event queries."""
+input ExceptionEventFilter {
+  deviceIds: [ID!]
+  driverIds: [ID!]
+  ruleIds: [ID!]
+  fromDate: DateTime!
+  toDate: DateTime!
+  includeInvalidated: Boolean
+}
+
+"""Filters for GPS record queries."""
+input GPSRecordFilter {
+  deviceIds: [ID!]
+  fromDate: DateTime!
+  toDate: DateTime!
+  boundingBox: BoundingBox
+}
+
+"""Filters for status data queries."""
+input StatusDataFilter {
+  deviceIds: [ID!]
+  diagnosticIds: [ID!]
+  fromDate: DateTime!
+  toDate: DateTime!
+}
+
+"""Filters for fault data queries."""
+input FaultDataFilter {
+  deviceIds: [ID!]
+  diagnosticIds: [ID!]
+  fromDate: DateTime!
+  toDate: DateTime!
+  activeOnly: Boolean
+}
+
+"""Pagination parameters."""
+input PaginationInput {
+  first: Int
+  after: String
+  last: Int
+  before: String
+}
+
+# ─────────────────────────────────────────────
+# Root Query
+# ─────────────────────────────────────────────
+
+type Query {
+  # Device queries
+  device(id: ID!): Device
+  devices(filter: DeviceFilter, pagination: PaginationInput): DeviceConnection!
+
+  # GPS / Location queries
+  gpsRecords(filter: GPSRecordFilter!, pagination: PaginationInput): GPSRecordConnection!
+
+  # Trip queries
+  trips(filter: TripFilter!, pagination: PaginationInput): TripConnection!
+
+  # Driver queries
+  driver(id: ID!): Driver
+  drivers(groups: [ID!], pagination: PaginationInput): DriverConnection!
+
+  # Exception queries
+  exceptionEvents(filter: ExceptionEventFilter!, pagination: PaginationInput): ExceptionEventConnection!
+  rules(pagination: PaginationInput): RuleConnection!
+  rule(id: ID!): Rule
+
+  # Diagnostic / Engine queries
+  diagnostics(pagination: PaginationInput): [Diagnostic!]!
+  diagnostic(id: ID!): Diagnostic
+  statusData(filter: StatusDataFilter!, pagination: PaginationInput): StatusDataConnection!
+  faultData(filter: FaultDataFilter!, pagination: PaginationInput): FaultDataConnection!
+
+  # HOS / ELD queries
+  dutyStatusLogs(driverIds: [ID!], fromDate: DateTime!, toDate: DateTime!, pagination: PaginationInput): DutyStatusLogConnection!
+  hosViolations(driverIds: [ID!], fromDate: DateTime!, toDate: DateTime!, pagination: PaginationInput): HosViolationConnection!
+
+  # Fuel queries
+  fuelTransactions(deviceIds: [ID!], fromDate: DateTime!, toDate: DateTime!, pagination: PaginationInput): FuelTransactionConnection!
+  fuelUsageSummary(deviceId: ID!, fromDate: DateTime!, toDate: DateTime!): FuelUsageSummary
+
+  # Zone queries
+  zone(id: ID!): Zone
+  zones(groups: [ID!], pagination: PaginationInput): ZoneConnection!
+
+  # Group queries
+  group(id: ID!): Group
+  groups(pagination: PaginationInput): GroupConnection!
+
+  # User queries
+  user(id: ID!): User
+  users(groups: [ID!], pagination: PaginationInput): UserConnection!
+
+  # Route / Work Order queries
+  route(id: ID!): Route
+  workOrders(deviceIds: [ID!], fromDate: DateTime, toDate: DateTime, pagination: PaginationInput): WorkOrderConnection!
+
+  # Driver Score / Behavior
+  driverScores(driverIds: [ID!], fromDate: Date!, toDate: Date!): [DriverScore!]!
+
+  # Utilization / Reporting
+  vehicleUtilizationSummary(deviceId: ID!, fromDate: DateTime!, toDate: DateTime!): VehicleUtilizationSummary
+  speedingEventSummary(deviceId: ID!, fromDate: DateTime!, toDate: DateTime!): SpeedingEventSummary
+
+  # Maintenance queries
+  maintenanceRecords(deviceId: ID!, pagination: PaginationInput): [MaintenanceRecord!]!
+  maintenanceReminders(deviceId: ID!): [MaintenanceReminder!]!
+
+  # Trailer queries
+  trailers(groups: [ID!], pagination: PaginationInput): [Trailer!]!
+  trailerAttachments(deviceId: ID, fromDate: DateTime, toDate: DateTime): [TrailerAttachment!]!
+
+  # Messaging
+  textMessages(deviceIds: [ID!], fromDate: DateTime!, toDate: DateTime!, pagination: PaginationInput): TextMessageConnection!
+}
+
+# ─────────────────────────────────────────────
+# Root Mutation
+# ─────────────────────────────────────────────
+
+type Mutation {
+  # Device mutations
+  createDevice(input: DeviceInput!): Device!
+  updateDevice(id: ID!, input: DeviceInput!): Device!
+  deleteDevice(id: ID!): Boolean!
+
+  # Driver mutations
+  createDriver(input: DriverInput!): Driver!
+  updateDriver(id: ID!, input: DriverInput!): Driver!
+  deleteDriver(id: ID!): Boolean!
+
+  # Zone mutations
+  createZone(input: ZoneInput!): Zone!
+  updateZone(id: ID!, input: ZoneInput!): Zone!
+  deleteZone(id: ID!): Boolean!
+
+  # Text message mutations
+  sendTextMessage(deviceId: ID!, message: String!, isDirectionToVehicle: Boolean!): TextMessage!
+
+  # Duty status log mutations (ELD)
+  createDutyStatusLog(driverId: ID!, deviceId: ID, status: DriverActivity!, dateTime: DateTime!, location: String, annotation: String): DutyStatusLog!
+
+  # Maintenance mutations
+  createMaintenanceRecord(deviceId: ID!, description: String!, dateTime: DateTime!, odometer: Float, engineHours: Float, cost: Float, currency: String): MaintenanceRecord!
+  updateMaintenanceReminder(id: ID!, nextServiceDateTime: DateTime, nextServiceOdometer: Float, isCompleted: Boolean): MaintenanceReminder!
+
+  # Work order mutations
+  createWorkOrder(deviceId: ID, driverId: ID, description: String!, scheduledDateTime: DateTime): WorkOrder!
+  updateWorkOrderStatus(id: ID!, status: WorkOrderStatus!): WorkOrder!
+}
+
+# ─────────────────────────────────────────────
+# Root Subscription
+# ─────────────────────────────────────────────
+
+type Subscription {
+  """Stream live GPS position updates for specified devices."""
+  deviceLocationUpdated(deviceIds: [ID!]!): GPSRecord!
+
+  """Stream new exception events as they occur."""
+  exceptionEventCreated(ruleIds: [ID!], deviceIds: [ID!]): ExceptionEvent!
+
+  """Stream new fault data records."""
+  faultDataCreated(deviceIds: [ID!]!): FaultData!
+
+  """Stream text messages sent to devices."""
+  textMessageSent(deviceIds: [ID!]!): TextMessage!
+}
