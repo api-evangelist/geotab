@@ -1,24 +1,28 @@
 {
+  "repo": "geotab",
   "blogURL": "https://www.geotab.com/blog/",
   "blogRSS": null,
   "rssConfirmed": false,
   "rssProbed": [
     "https://www.geotab.com/blog/feed/",
+    "https://www.geotab.com/blog/rss/",
+    "https://www.geotab.com/blog/feed.xml",
+    "https://www.geotab.com/blog/atom.xml",
+    "https://www.geotab.com/blog/index.xml",
+    "https://www.geotab.com/blog/rss.xml",
     "https://www.geotab.com/feed/"
   ],
-  "note": "No RSS or Atom feed discovered as of 2026-06-12. The Geotab blog at geotab.com/blog/ does not expose a machine-readable feed link.",
-  "lastChecked": "2026-06-12",
-  "posts": [],
-  "repo": "geotab",
+  "note": "No RSS or Atom feed discovered; all standard feed paths return 404 and the blog HTML head exposes no feed link. Posts pulled via HTML scraping of geotab.com/blog/.",
+  "lastChecked": "2026-06-21",
   "feeds": [
     {
-      "source": "https://x.com/geotab",
-      "feed_url": "https://x.com/geotab",
-      "title": "",
-      "saved": 0,
-      "method": "none"
+      "source": "https://www.geotab.com/blog/",
+      "feed_url": "",
+      "saved": 1,
+      "method": "agent-scrape"
     }
   ],
-  "post_count": 0,
-  "fetched": "2026-06-14T20:42:17Z"
+  "fetched": "2026-06-27T12:43:37Z",
+  "agent_pulled": "2026-06-27",
+  "post_count": 6
 }
