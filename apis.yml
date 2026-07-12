@@ -112,6 +112,12 @@ apis:
   - FN: Geotab Developer Support
     url: https://developers.geotab.com/
 common:
+- type: VulnerabilityDisclosure
+  url: security/geotab-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/geotab-domain-security.yml
+- type: Authentication
+  url: authentication/geotab-authentication.yml
 - type: Website
   url: https://www.geotab.com/
 - type: Documentation
