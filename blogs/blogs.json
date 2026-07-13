@@ -13,16 +13,17 @@
     "https://www.geotab.com/feed/"
   ],
   "note": "No RSS or Atom feed discovered; all standard feed paths return 404 and the blog HTML head exposes no feed link. Posts pulled via HTML scraping of geotab.com/blog/.",
-  "lastChecked": "2026-06-21",
+  "lastChecked": "2026-07-04",
   "feeds": [
     {
-      "source": "https://www.geotab.com/blog/",
-      "feed_url": "",
-      "saved": 1,
-      "method": "agent-scrape"
+      "source": "https://x.com/geotab",
+      "feed_url": "https://x.com/geotab",
+      "title": "",
+      "saved": 0,
+      "method": "none"
     }
   ],
-  "fetched": "2026-06-27T12:43:37Z",
-  "agent_pulled": "2026-06-27",
-  "post_count": 6
+  "fetched": "2026-07-11T11:50:51Z",
+  "agent_pulled": "2026-07-04",
+  "post_count": 8
 }
