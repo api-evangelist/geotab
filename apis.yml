@@ -112,6 +112,8 @@ apis:
   - FN: Geotab Developer Support
     url: https://developers.geotab.com/
 common:
+- type: AgenticAccess
+  url: agentic-access/geotab-agentic-access.yml
 - type: VulnerabilityDisclosure
   url: security/geotab-vulnerability-disclosure.yml
 - type: DomainSecurity
