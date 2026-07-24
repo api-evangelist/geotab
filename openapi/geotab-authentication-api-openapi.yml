@@ -1,0 +1,308 @@
+openapi: 3.0.1
+info:
+  title: Data Intake Gateway Authentication API
+  version: v3.4.2
+  description: Please see the <a href='https://docs.google.com/document/d/15uNuPqwFcPLe6vKs_JgY5nPTy2isQ3WYUu4oyQ3cEfQ'>Data Intake Gateway Guide</a> to learn more; there are important workflow and implementation details to consider for all endpoints.
+tags:
+- name: Authentication
+paths:
+  /authentication/authenticate:
+    post:
+      tags:
+      - Authentication
+      summary: Authenticate to the API
+      description: Authenticate against the API with credentials
+      operationId: authenticate
+      requestBody:
+        description: The username and password to authenticate with
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticateModel'
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationSuccessResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/AuthenticatedResponseExample'
+        '400':
+          description: Request was missing all or part of the required parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/GenericErrorResponseExample'
+        '401':
+          description: Credentials provided could not be used to authenticate successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/GenericErrorResponseExample'
+        '429':
+          description: Too many requests; rate limit quota exceeded; see public documentation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/GenericErrorResponseExample'
+        '503':
+          description: Service is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/GenericErrorResponseExample'
+  /authentication/refresh-token:
+    post:
+      security:
+      - bearerAuth: []
+      tags:
+      - Authentication
+      summary: Refresh tokens using refresh and bearer tokens
+      description: ''
+      operationId: refresh-token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshModel'
+      responses:
+        '200':
+          description: Token refresh was successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationSuccessResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/AuthenticatedResponseExample'
+        '400':
+          description: Request was missing all or part of the required parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/GenericErrorResponseExample'
+        '401':
+          description: Tokens provided could not be used to refresh successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/GenericErrorResponseExample'
+        '403':
+          description: Token was already refreshed and/or cannot be found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/GenericErrorResponseExample'
+        '429':
+          description: Too many requests; rate limit quota exceeded; see public documentation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/GenericErrorResponseExample'
+        '503':
+          description: Service is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/GenericErrorResponseExample'
+  /authentication/revoke-token:
+    post:
+      security:
+      - bearerAuth: []
+      tags:
+      - Authentication
+      summary: Revoke current tokens
+      description: ''
+      operationId: revoke-token
+      requestBody:
+        description: Revoke the current set of tokens so they are no longer valid
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshModel'
+      responses:
+        '202':
+          description: Token revocation request was accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RevokeTokenSuccessResponse'
+              example:
+                Error: []
+                Data: Refresh token revoked and user bearer token enqueued as blocked.
+        '400':
+          description: Request was missing all or part of the required parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/GenericErrorResponseExample'
+        '401':
+          description: Tokens provided could not be used to revoke successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/GenericErrorResponseExample'
+        '403':
+          description: Token has already been revoked and/or cannot be found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/GenericErrorResponseExample'
+        '429':
+          description: Too many requests; rate limit quota exceeded; see public documentation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/GenericErrorResponseExample'
+        '503':
+          description: Service is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/GenericErrorResponseExample'
+components:
+  schemas:
+    RevokeTokenSuccessResponse:
+      type: object
+      properties:
+        Error:
+          $ref: '#/components/schemas/ResponseErrors'
+        Data:
+          type: string
+    AuthenticateModel:
+      required:
+      - Password
+      - Username
+      type: object
+      properties:
+        Username:
+          type: string
+        Password:
+          type: string
+      additionalProperties: false
+    ErrorResponse:
+      type: object
+      properties:
+        Error:
+          $ref: '#/components/schemas/ResponseErrors'
+        Data:
+          type: string
+    ResponseErrors:
+      type: array
+      items:
+        type: string
+    AuthenticationStatus:
+      type: object
+      properties:
+        Authenticated:
+          type: boolean
+        UserId:
+          type: string
+        BearerToken:
+          $ref: '#/components/schemas/Token'
+        RefreshToken:
+          $ref: '#/components/schemas/Token'
+    AuthenticationSuccessResponse:
+      type: object
+      properties:
+        Error:
+          $ref: '#/components/schemas/ResponseErrors'
+        Data:
+          $ref: '#/components/schemas/AuthenticationStatus'
+    TokenRefreshModel:
+      required:
+      - BearerToken
+      - RefreshToken
+      type: object
+      properties:
+        BearerToken:
+          type: string
+        RefreshToken:
+          type: string
+      additionalProperties: false
+    Token:
+      type: object
+      properties:
+        TokenString:
+          type: string
+        Expires:
+          type: string
+          format: date-time
+        Created:
+          type: string
+          format: date-time
+  examples:
+    GenericErrorResponseExample:
+      summary: Sample of a generic error response
+      description: Note that Error and Data are mutually exclusive. In error condition Error is populated with one or more errors; Data will be empty.
+      value:
+        Error:
+        - Error message here
+        Data: {}
+    AuthenticatedResponseExample:
+      summary: Sample of a successful authenticated response.
+      value:
+        Error: []
+        Data:
+          Authenticated: true
+          UserId: dig@geo.tab
+          BearerToken:
+            TokenString: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImRpZ0BnZW8udGFiIiwibmJmIjoxNjEyODQ2ODEwLCJleHAiOjE2MTMxMDYwMTAsImlhdCI6MTYxMjg0NjgxMH0.pXS0ehnRCwZSzGNLSYGlh_oJCnXieFZBu7HBV6y0b5Q
+            Created: '2019-07-26T00:00:10'
+            Expires: '2019-07-26T00:00:10'
+          RefreshToken:
+            TokenString: m=+tunBX6uDBY/Rk9OUQeZdCdmaQgzPHdGvVH2B3cuCXwjADdqvD44vyCr0Z
+            Created: '2019-07-26T00:00:10'
+            Expires: '2019-07-26T00:00:10'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

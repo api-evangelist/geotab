@@ -1,0 +1,179 @@
+openapi: 3.0.1
+info:
+  title: Data Intake Gateway Authentication Invalid Records API
+  version: v3.4.2
+  description: Please see the <a href='https://docs.google.com/document/d/15uNuPqwFcPLe6vKs_JgY5nPTy2isQ3WYUu4oyQ3cEfQ'>Data Intake Gateway Guide</a> to learn more; there are important workflow and implementation details to consider for all endpoints.
+tags:
+- name: Invalid Records
+paths:
+  /invalidrecords:
+    get:
+      security:
+      - bearerAuth: []
+      tags:
+      - Invalid Records
+      parameters:
+      - name: nextResultKey
+        in: query
+        schema:
+          type: integer
+      - name: numberOfResults
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 50000
+          default: 1000
+      responses:
+        '200':
+          description: Fetch batch of invalid records
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidRecordsResponse'
+              example:
+                Error: []
+                Data:
+                  NextResultKey: 1002154023
+                  CurrentResultKey: 1002152089
+                  TotalNumberOfInvalidRecords: 16545
+                  CurrentNumberOfInvalidRecords: 200
+                  InvalidRecords:
+                  - BaseRecord:
+                      SerialNo: '2396122106100'
+                      Type: GenericStatusRecord
+                      DateTime: '2021-02-10T01:00:00.500Z'
+                      Code: 7
+                      Value: 0
+                    Cause: Reason message was rejected
+                    TimeStamp: '2021-02-10T02:00:00Z'
+                    UserId: dig@geo.tab
+                  - BaseRecord:
+                      SerialNo: '6605174986852'
+                      Type: StatusRecord
+                      DateTime: '2021-02-10T01:00:00.010Z'
+                      Code: 12
+                      Value: 5
+                    Cause: Reason message was rejected
+                    TimeStamp: '2021-02-10T02:01:00Z'
+                    UserId: dig@geo.tab
+        '400':
+          description: Request was missing all or part of the required parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/GenericErrorResponseExample'
+        '401':
+          description: Tokens provided could not be used to authenticate successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/GenericErrorResponseExample'
+        '503':
+          description: Service is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/GenericErrorResponseExample'
+components:
+  examples:
+    GenericErrorResponseExample:
+      summary: Sample of a generic error response
+      description: Note that Error and Data are mutually exclusive. In error condition Error is populated with one or more errors; Data will be empty.
+      value:
+        Error:
+        - Error message here
+        Data: {}
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        Error:
+          $ref: '#/components/schemas/ResponseErrors'
+        Data:
+          type: string
+    ResponseErrors:
+      type: array
+      items:
+        type: string
+    InvalidRecordsResponse:
+      type: object
+      properties:
+        Error:
+          $ref: '#/components/schemas/ResponseErrors'
+        Data:
+          $ref: '#/components/schemas/InvalidRecordSet'
+    InvalidRecord:
+      type: object
+      description: A data record class that contains data which is not accepted by the API.
+      properties:
+        BaseRecord:
+          $ref: '#/components/schemas/BaseRecord'
+        Cause:
+          type: string
+          nullable: true
+          description: Reason the record was rejected.
+        TimeStamp:
+          type: string
+          format: date-time
+          description: Date and time the record was marked invalid in the ISO 8601 RFC3339 format.
+        UserId:
+          type: string
+          nullable: true
+          description: ID of the user who owns this record.
+      additionalProperties: false
+    BaseRecord:
+      type: object
+      description: An abstract data record class (all fields are required).
+      properties:
+        Type:
+          type: string
+          description: Indicates the type of record.
+        DateTime:
+          type: string
+          format: date-time
+          description: Date and time of the record in the ISO 8601 RFC3339, UTC zulu format yyyy-MM-ddTHH:mm:ss.ffffffZ is recommended. See DIG guide *Working with Dates* section for more details.
+        SerialNo:
+          type: string
+          description: Device serial number.
+      additionalProperties: false
+    InvalidRecordSet:
+      type: object
+      description: A data record class that contains invalid record data.
+      properties:
+        NextResultKey:
+          type: integer
+          format: int64
+          description: Cursor pointing to the next record after the current set.
+        CurrentResultKey:
+          type: integer
+          format: int64
+          description: Cursor pointing to the start of the current results.
+        TotalNumberOfInvalidRecords:
+          type: integer
+          format: int64
+          description: Total number of invalid records for the current user.
+        CurrentNumberOfInvalidRecords:
+          type: integer
+          format: int64
+          description: Number of invalid records in the current set.
+        InvalidRecords:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvalidRecord'
+          description: Array of InvalidRecords.
+      additionalProperties: false
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
