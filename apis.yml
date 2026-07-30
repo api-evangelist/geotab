@@ -1,7 +1,20 @@
 aid: geotab
 name: Geotab
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/geotab.png
 url: https://raw.githubusercontent.com/api-evangelist/geotab/refs/heads/main/apis.yml
 created: 2026-06-12
 modified: 2026-06-12
@@ -31,12 +44,10 @@ apis:
 - aid: geotab:mygeotab-api
   name: MyGeotab API
   type: REST
-  description: 'The MyGeotab API provides JSON-RPC 2.0 access to all fleet telematics
-    data including vehicle location, trip history, driver behavior, fault codes, fuel
-    usage, HOS/ELD compliance records, and sensor data. It supports GetFeed for real-time
-    data streaming and batch retrieval operations.
-
-    '
+  description: >
+    The MyGeotab API provides JSON-RPC 2.0 access to all fleet telematics data including vehicle location,
+    trip history, driver behavior, fault codes, fuel usage, HOS/ELD compliance records, and sensor data.
+    It supports GetFeed for real-time data streaming and batch retrieval operations.
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://developers.geotab.com/myGeotab/introduction/
   baseURL: https://my.geotab.com/apiv1
@@ -59,42 +70,13 @@ apis:
   contact:
   - FN: Geotab Developer Support
     url: https://developers.geotab.com/
-- aid: geotab:data-intake-gateway
-  name: Data Intake Gateway API
-  type: REST
-  description: 'The Geotab Data Intake Gateway (DIG) API accepts telematics records
-    from third-party devices directly into the MyGeotab platform. It uses JWT bearer
-    token authentication and supports 12 distinct record types including GPS, acceleration,
-    fault codes, driver changes, and VIN data.
-
-    '
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://github.com/Geotab/data-intake-gateway
-  baseURL: https://dig.geotab.com
-  tags:
-  - Fleet Telematics
-  - Data Ingestion
-  - IoT
-  - GPS
-  properties:
-  - type: OpenAPI
-    url: openapi/geotab-data-intake-gateway-openapi.yml
-  - type: Examples
-    url: examples/geotab-dig-authenticate-example.json
-  - type: Examples
-    url: examples/geotab-dig-records-example.json
-  contact:
-  - FN: Geotab Developer Support
-    url: https://developers.geotab.com/
 - aid: geotab:myadmin-api
   name: MyAdmin API
   type: REST
-  description: 'The MyAdmin API provides reseller and partner access to Geotab''s
-    administrative platform for managing databases, device provisioning, orders, billing,
-    and account management. Access requires a MyAdmin account with the MyAdminApiUser
-    role.
-
-    '
+  description: >
+    The MyAdmin API provides reseller and partner access to Geotab's administrative platform for managing
+    databases, device provisioning, orders, billing, and account management. Access requires a MyAdmin
+    account with the MyAdminApiUser role.
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://developers.geotab.com/myAdmin/introduction/index.html
   baseURL: https://myadmin.geotab.com/v2/MyAdminApi.ashx
@@ -111,6 +93,48 @@ apis:
   contact:
   - FN: Geotab Developer Support
     url: https://developers.geotab.com/
+- aid: geotab:geotab-authentication-api
+  name: Geotab Authentication API
+  description: The Authentication API from Geotab — 3 operation(s) for authentication.
+  humanURL: https://developers.geotab.com/myGeotab/introduction/
+  baseURL: https://my.geotab.com/apiv1
+  tags:
+  - Authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/geotab-authentication-api-openapi.yml
+  - type: Examples
+    url: examples/geotab-dig-authenticate-example.json
+  - type: Examples
+    url: examples/geotab-dig-records-example.json
+- aid: geotab:geotab-invalid-records-api
+  name: Geotab Invalid Records API
+  description: The Invalid Records API from Geotab — 1 operation(s) for invalid records.
+  humanURL: https://developers.geotab.com/myGeotab/introduction/
+  baseURL: https://my.geotab.com/apiv1
+  tags:
+  - Invalid Records
+  properties:
+  - type: OpenAPI
+    url: openapi/geotab-invalid-records-api-openapi.yml
+  - type: Examples
+    url: examples/geotab-dig-authenticate-example.json
+  - type: Examples
+    url: examples/geotab-dig-records-example.json
+- aid: geotab:geotab-records-api
+  name: Geotab Records API
+  description: The Records API from Geotab — 1 operation(s) for records.
+  humanURL: https://developers.geotab.com/myGeotab/introduction/
+  baseURL: https://my.geotab.com/apiv1
+  tags:
+  - Records
+  properties:
+  - type: OpenAPI
+    url: openapi/geotab-records-api-openapi.yml
+  - type: Examples
+    url: examples/geotab-dig-authenticate-example.json
+  - type: Examples
+    url: examples/geotab-dig-records-example.json
 common:
 - type: AgenticAccess
   url: agentic-access/geotab-agentic-access.yml
