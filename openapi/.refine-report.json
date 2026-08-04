@@ -1,0 +1,18 @@
+{
+  "provider": "geotab",
+  "sources": [
+    "geotab-authentication-api-openapi.yml",
+    "geotab-invalid-records-api-openapi.yml",
+    "geotab-records-api-openapi.yml"
+  ],
+  "outputs": [
+    "geotab-authentication-api-openapi.yml",
+    "geotab-invalid-records-api-openapi.yml",
+    "geotab-records-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
