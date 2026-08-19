@@ -18,7 +18,7 @@ image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/geotab.png
 url: https://raw.githubusercontent.com/api-evangelist/geotab/refs/heads/main/apis.yml
 created: 2026-06-12
 modified: 2026-06-12
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 description: 'Geotab is a fleet telematics platform providing the MyGeotab SDK and
   REST API for vehicle tracking, driver behavior monitoring, fuel management, ELD
   compliance, and route optimization. The MyGeotab API uses JSON-RPC 2.0 over HTTPS
