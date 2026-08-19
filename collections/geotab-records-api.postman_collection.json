@@ -1,0 +1,289 @@
+{
+  "item": [
+    {
+      "id": "38c53327-8d3f-418f-82f8-f7d4749bd4d5",
+      "name": "Records",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f54bdbed-dcd8-4f31-953b-e675173a9920",
+          "name": "/records",
+          "request": {
+            "name": "/records",
+            "description": {},
+            "url": {
+              "path": [
+                "records"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"Type\": \"<string>\",\n    \"DateTime\": \"<dateTime>\",\n    \"SerialNo\": \"<string>\",\n    \"X\": \"<int16>\",\n    \"Y\": \"<int16>\",\n    \"Z\": \"<int16>\"\n  },\n  {\n    \"Type\": \"<string>\",\n    \"DateTime\": \"<dateTime>\",\n    \"SerialNo\": \"<string>\",\n    \"X\": \"<int16>\",\n    \"Y\": \"<int16>\",\n    \"Z\": \"<int16>\"\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "97d35036-7aa1-421a-acc6-2cde2d46bbea",
+              "name": "Records accepted for processing",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "records"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"Type\": \"<string>\",\n    \"DateTime\": \"<dateTime>\",\n    \"SerialNo\": \"<string>\",\n    \"X\": \"<int16>\",\n    \"Y\": \"<int16>\",\n    \"Z\": \"<int16>\"\n  },\n  {\n    \"Type\": \"<string>\",\n    \"DateTime\": \"<dateTime>\",\n    \"SerialNo\": \"<string>\",\n    \"X\": \"<int16>\",\n    \"Y\": \"<int16>\",\n    \"Z\": \"<int16>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Error\": [],\n  \"Data\": \"feeac962-4496-4458-a489-e2d9b4ea12ec\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eb117ba1-cf1b-4065-b016-ec7ae4c4648d",
+              "name": "Request was missing all or part of the required parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "records"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"Type\": \"<string>\",\n    \"DateTime\": \"<dateTime>\",\n    \"SerialNo\": \"<string>\",\n    \"X\": \"<int16>\",\n    \"Y\": \"<int16>\",\n    \"Z\": \"<int16>\"\n  },\n  {\n    \"Type\": \"<string>\",\n    \"DateTime\": \"<dateTime>\",\n    \"SerialNo\": \"<string>\",\n    \"X\": \"<int16>\",\n    \"Y\": \"<int16>\",\n    \"Z\": \"<int16>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Error\": [\n    \"Error message here\"\n  ],\n  \"Data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "97435a98-24da-4708-baa6-2da0dc64972d",
+              "name": "Request payload was too large (size in bytes or too many records)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "records"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"Type\": \"<string>\",\n    \"DateTime\": \"<dateTime>\",\n    \"SerialNo\": \"<string>\",\n    \"X\": \"<int16>\",\n    \"Y\": \"<int16>\",\n    \"Z\": \"<int16>\"\n  },\n  {\n    \"Type\": \"<string>\",\n    \"DateTime\": \"<dateTime>\",\n    \"SerialNo\": \"<string>\",\n    \"X\": \"<int16>\",\n    \"Y\": \"<int16>\",\n    \"Z\": \"<int16>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Error\": [\n    \"Error message here\"\n  ],\n  \"Data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d24f124e-8fe3-4c9e-a2ce-ee23533626d3",
+              "name": "Service is unavailable",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "records"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"Type\": \"<string>\",\n    \"DateTime\": \"<dateTime>\",\n    \"SerialNo\": \"<string>\",\n    \"X\": \"<int16>\",\n    \"Y\": \"<int16>\",\n    \"Z\": \"<int16>\"\n  },\n  {\n    \"Type\": \"<string>\",\n    \"DateTime\": \"<dateTime>\",\n    \"SerialNo\": \"<string>\",\n    \"X\": \"<int16>\",\n    \"Y\": \"<int16>\",\n    \"Z\": \"<int16>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Error\": [\n    \"Error message here\"\n  ],\n  \"Data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "17ed1018-775e-42af-9c0d-ca30f7aa6a00",
+    "name": "Data Intake Gateway Authentication Records API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Please see the <a href='https://docs.google.com/document/d/15uNuPqwFcPLe6vKs_JgY5nPTy2isQ3WYUu4oyQ3cEfQ'>Data Intake Gateway Guide</a> to learn more; there are important workflow and implementation details to consider for all endpoints.",
+      "type": "text/plain"
+    }
+  }
+}

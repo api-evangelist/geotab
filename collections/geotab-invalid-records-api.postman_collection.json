@@ -1,0 +1,291 @@
+{
+  "item": [
+    {
+      "id": "338f4889-8660-4903-b105-56c5c5d170b3",
+      "name": "Invalid Records",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d8710814-237e-4861-b2c3-7c13084f40f3",
+          "name": "/invalidrecords",
+          "request": {
+            "name": "/invalidrecords",
+            "description": {},
+            "url": {
+              "path": [
+                "invalidrecords"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "nextResultKey",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "numberOfResults",
+                  "value": "1000"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "61df2f01-a8f3-4acd-a7ca-f639e6fc4c33",
+              "name": "Fetch batch of invalid records",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invalidrecords"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "nextResultKey",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "numberOfResults",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Error\": [],\n  \"Data\": {\n    \"NextResultKey\": 1002154023,\n    \"CurrentResultKey\": 1002152089,\n    \"TotalNumberOfInvalidRecords\": 16545,\n    \"CurrentNumberOfInvalidRecords\": 200,\n    \"InvalidRecords\": [\n      {\n        \"BaseRecord\": {\n          \"SerialNo\": \"2396122106100\",\n          \"Type\": \"GenericStatusRecord\",\n          \"DateTime\": \"2021-02-10T01:00:00.500Z\",\n          \"Code\": 7,\n          \"Value\": 0\n        },\n        \"Cause\": \"Reason message was rejected\",\n        \"TimeStamp\": \"2021-02-10T02:00:00Z\",\n        \"UserId\": \"dig@geo.tab\"\n      },\n      {\n        \"BaseRecord\": {\n          \"SerialNo\": \"6605174986852\",\n          \"Type\": \"StatusRecord\",\n          \"DateTime\": \"2021-02-10T01:00:00.010Z\",\n          \"Code\": 12,\n          \"Value\": 5\n        },\n        \"Cause\": \"Reason message was rejected\",\n        \"TimeStamp\": \"2021-02-10T02:01:00Z\",\n        \"UserId\": \"dig@geo.tab\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0efe4a62-3bcb-4182-b6e3-41d1821a4373",
+              "name": "Request was missing all or part of the required parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invalidrecords"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "nextResultKey",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "numberOfResults",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Error\": [\n    \"Error message here\"\n  ],\n  \"Data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ee88e8c0-9279-4895-98dc-ebc2cd11c3fe",
+              "name": "Tokens provided could not be used to authenticate successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invalidrecords"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "nextResultKey",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "numberOfResults",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Error\": [\n    \"Error message here\"\n  ],\n  \"Data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "60629ec7-b97b-4e0c-868e-336367015b00",
+              "name": "Service is unavailable",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invalidrecords"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "nextResultKey",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "numberOfResults",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Error\": [\n    \"Error message here\"\n  ],\n  \"Data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "237cc40f-a805-47fc-b4ed-ec5d67819c0f",
+    "name": "Data Intake Gateway Authentication Invalid Records API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Please see the <a href='https://docs.google.com/document/d/15uNuPqwFcPLe6vKs_JgY5nPTy2isQ3WYUu4oyQ3cEfQ'>Data Intake Gateway Guide</a> to learn more; there are important workflow and implementation details to consider for all endpoints.",
+      "type": "text/plain"
+    }
+  }
+}

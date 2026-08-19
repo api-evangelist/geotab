@@ -1,0 +1,44 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Data Intake Gateway Authentication Invalid Records API",
+    "version": "v3.4.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Invalid Records",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "GET /invalidrecords",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/invalidrecords",
+            "params": [
+              {
+                "name": "nextResultKey",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "numberOfResults",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
