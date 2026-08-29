@@ -148,6 +148,9 @@ apis:
   - type: Examples
     url: examples/geotab-dig-records-example.json
 common:
+- type: CapabilityMap
+  url: capabilities/geotab-capability-edges.yml
+  name: Geotab Business Capability Map
 - type: AgenticAccess
   url: agentic-access/geotab-agentic-access.yml
 - type: VulnerabilityDisclosure
