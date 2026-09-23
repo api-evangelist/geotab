@@ -1,8 +1,8 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Data Intake Gateway Authentication Invalid Records API
+  title: Data Intake Gateway Invalid Records API
   version: v3.4.2
-  description: Please see the <a href='https://docs.google.com/document/d/15uNuPqwFcPLe6vKs_JgY5nPTy2isQ3WYUu4oyQ3cEfQ'>Data Intake Gateway Guide</a> to learn more; there are important workflow and implementation details to consider for all endpoints.
+  description: Please see the Data Intake Gateway Guide to learn more; there are important workflow and implementation details to consider for all endpoints.
 tags:
 - name: Invalid Records
 paths:
@@ -84,27 +84,12 @@ paths:
               examples:
                 example:
                   $ref: '#/components/examples/GenericErrorResponseExample'
+      summary: Get invalidrecords
+      x-summary-source: derived
+      operationId: getInvalidrecords
+      x-operation-id-source: derived
 components:
-  examples:
-    GenericErrorResponseExample:
-      summary: Sample of a generic error response
-      description: Note that Error and Data are mutually exclusive. In error condition Error is populated with one or more errors; Data will be empty.
-      value:
-        Error:
-        - Error message here
-        Data: {}
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        Error:
-          $ref: '#/components/schemas/ResponseErrors'
-        Data:
-          type: string
-    ResponseErrors:
-      type: array
-      items:
-        type: string
     InvalidRecordsResponse:
       type: object
       properties:
@@ -112,40 +97,13 @@ components:
           $ref: '#/components/schemas/ResponseErrors'
         Data:
           $ref: '#/components/schemas/InvalidRecordSet'
-    InvalidRecord:
+    ErrorResponse:
       type: object
-      description: A data record class that contains data which is not accepted by the API.
       properties:
-        BaseRecord:
-          $ref: '#/components/schemas/BaseRecord'
-        Cause:
+        Error:
+          $ref: '#/components/schemas/ResponseErrors'
+        Data:
           type: string
-          nullable: true
-          description: Reason the record was rejected.
-        TimeStamp:
-          type: string
-          format: date-time
-          description: Date and time the record was marked invalid in the ISO 8601 RFC3339 format.
-        UserId:
-          type: string
-          nullable: true
-          description: ID of the user who owns this record.
-      additionalProperties: false
-    BaseRecord:
-      type: object
-      description: An abstract data record class (all fields are required).
-      properties:
-        Type:
-          type: string
-          description: Indicates the type of record.
-        DateTime:
-          type: string
-          format: date-time
-          description: Date and time of the record in the ISO 8601 RFC3339, UTC zulu format yyyy-MM-ddTHH:mm:ss.ffffffZ is recommended. See DIG guide *Working with Dates* section for more details.
-        SerialNo:
-          type: string
-          description: Device serial number.
-      additionalProperties: false
     InvalidRecordSet:
       type: object
       description: A data record class that contains invalid record data.
@@ -172,6 +130,54 @@ components:
             $ref: '#/components/schemas/InvalidRecord'
           description: Array of InvalidRecords.
       additionalProperties: false
+    ResponseErrors:
+      type: array
+      items:
+        type: string
+    BaseRecord:
+      type: object
+      description: An abstract data record class (all fields are required).
+      properties:
+        Type:
+          type: string
+          description: Indicates the type of record.
+        DateTime:
+          type: string
+          format: date-time
+          description: Date and time of the record in the ISO 8601 RFC3339, UTC zulu format yyyy-MM-ddTHH:mm:ss.ffffffZ is recommended. See DIG guide *Working with Dates* section for more details.
+        SerialNo:
+          type: string
+          description: Device serial number.
+      additionalProperties: false
+    InvalidRecord:
+      type: object
+      description: A data record class that contains data which is not accepted by the API.
+      properties:
+        BaseRecord:
+          $ref: '#/components/schemas/BaseRecord'
+        Cause:
+          type:
+          - string
+          - 'null'
+          description: Reason the record was rejected.
+        TimeStamp:
+          type: string
+          format: date-time
+          description: Date and time the record was marked invalid in the ISO 8601 RFC3339 format.
+        UserId:
+          type:
+          - string
+          - 'null'
+          description: ID of the user who owns this record.
+      additionalProperties: false
+  examples:
+    GenericErrorResponseExample:
+      summary: Sample of a generic error response
+      description: Note that Error and Data are mutually exclusive. In error condition Error is populated with one or more errors; Data will be empty.
+      value:
+        Error:
+        - Error message here
+        Data: {}
   securitySchemes:
     bearerAuth:
       type: http

@@ -1,8 +1,8 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Data Intake Gateway Authentication Records API
+  title: Data Intake Gateway Records API
   version: v3.4.2
-  description: Please see the <a href='https://docs.google.com/document/d/15uNuPqwFcPLe6vKs_JgY5nPTy2isQ3WYUu4oyQ3cEfQ'>Data Intake Gateway Guide</a> to learn more; there are important workflow and implementation details to consider for all endpoints.
+  description: Please see the Data Intake Gateway Guide to learn more; there are important workflow and implementation details to consider for all endpoints.
 tags:
 - name: Records
 paths:
@@ -80,8 +80,23 @@ paths:
               examples:
                 example:
                   $ref: '#/components/examples/GenericErrorResponseExample'
+      summary: Create records
+      x-summary-source: derived
+      operationId: postRecords
+      x-operation-id-source: derived
 components:
   schemas:
+    BinaryRecord:
+      description: A data record class that supports arbitrary binary data.
+      allOf:
+      - $ref: '#/components/schemas/BaseRecord'
+      - type: object
+        properties:
+          Data:
+            type: string
+            format: byte
+            maxLength: 32745
+            description: Arbitrary binary payload, Base64 encoded. Maximum size of 32745 bytes.
     GenericFaultRecord:
       description: A data record class that contains generic fault data.
       allOf:
@@ -96,6 +111,18 @@ components:
           FaultStateActive:
             type: boolean
             description: A value indicating whether the fault state is active.
+    StatusRecord:
+      description: A data record class that contains status data.
+      allOf:
+      - $ref: '#/components/schemas/BaseRecord'
+      - type: object
+        properties:
+          Code:
+            type: integer
+            description: The diagnostic code (of type status). (Range <=127, >=2000)
+          Value:
+            type: integer
+            description: The value of the diagnostic. (valid values depend on diagnostic code)
     GpsRecord:
       description: A data record class that contains latitudinal and longitudinal location data and speed (km/h). Other ancillary flags are also supported.
       allOf:
@@ -144,11 +171,14 @@ components:
             type: number
             format: float (4-bytes signed)
             description: The speed in kilometers per hour.
-    GenericStatusRecord:
-      description: A data record class that supports generalised data from a telematics device. Supports a specific set of codes.
-      allOf:
-      - $ref: '#/components/schemas/StatusRecord'
-      - type: object
+    RecordsResponse:
+      type: object
+      properties:
+        Error:
+          $ref: '#/components/schemas/ResponseErrors'
+        Data:
+          type: string
+          format: uuid
     J1939FaultRecord:
       description: A data record class that contains J1939 fault data.
       allOf:
@@ -191,29 +221,6 @@ components:
           FaultStateActive:
             type: boolean
             description: A value indicating whether the fault state is active.
-    StatusRecord:
-      description: A data record class that contains status data.
-      allOf:
-      - $ref: '#/components/schemas/BaseRecord'
-      - type: object
-        properties:
-          Code:
-            type: integer
-            description: The diagnostic code (of type status). (Range <=127, >=2000)
-          Value:
-            type: integer
-            description: The value of the diagnostic. (valid values depend on diagnostic code)
-    BinaryRecord:
-      description: A data record class that supports arbitrary binary data.
-      allOf:
-      - $ref: '#/components/schemas/BaseRecord'
-      - type: object
-        properties:
-          Data:
-            type: string
-            format: byte
-            maxLength: 32745
-            description: Arbitrary binary payload, Base64 encoded. Maximum size of 32745 bytes.
     ErrorResponse:
       type: object
       properties:
@@ -221,51 +228,6 @@ components:
           $ref: '#/components/schemas/ResponseErrors'
         Data:
           type: string
-    ResponseErrors:
-      type: array
-      items:
-        type: string
-    J1708FaultRecord:
-      description: A data record class that contains J1708 fault data.
-      allOf:
-      - $ref: '#/components/schemas/BaseRecord'
-      - type: object
-        properties:
-          MessageId:
-            type: integer
-            format: uint8
-            minimum: 0
-            maximum: 255
-            description: Identifier for the component sending the message.
-          ParameterId:
-            type: integer
-            format: uint16
-            minimum: 0
-            maximum: 511
-            nullable: true
-            description: Parameter identification without a related Subsystem ID.
-          SubsystemId:
-            type: integer
-            format: uint16
-            minimum: 0
-            maximum: 511
-            nullable: true
-            description: Identifies a section of the control system without a related Parameter ID.
-          FailureModeIdentifier:
-            type: integer
-            format: uint8
-            minimum: 0
-            maximum: 15
-            description: Failure mode identifier associated with a diagnostic trouble code.
-          OccurrenceCount:
-            type: integer
-            format: uint8
-            minimum: 0
-            maximum: 255
-            description: Number of faults.
-          FaultStateActive:
-            type: boolean
-            description: A value indicating whether the fault state is active.
     AccelerationRecord:
       description: A data record class that contains acceleration data.
       allOf:
@@ -284,6 +246,110 @@ components:
             type: integer
             format: int16
             description: The Z-axis acceleration (up or down) in milli-g (1000 milli-g = 1 G Gravitational force).
+    J1708FaultRecord:
+      description: A data record class that contains J1708 fault data.
+      allOf:
+      - $ref: '#/components/schemas/BaseRecord'
+      - type: object
+        properties:
+          MessageId:
+            type: integer
+            format: uint8
+            minimum: 0
+            maximum: 255
+            description: Identifier for the component sending the message.
+          ParameterId:
+            type:
+            - integer
+            - 'null'
+            format: uint16
+            minimum: 0
+            maximum: 511
+            description: Parameter identification without a related Subsystem ID.
+          SubsystemId:
+            type:
+            - integer
+            - 'null'
+            format: uint16
+            minimum: 0
+            maximum: 511
+            description: Identifies a section of the control system without a related Parameter ID.
+          FailureModeIdentifier:
+            type: integer
+            format: uint8
+            minimum: 0
+            maximum: 15
+            description: Failure mode identifier associated with a diagnostic trouble code.
+          OccurrenceCount:
+            type: integer
+            format: uint8
+            minimum: 0
+            maximum: 255
+            description: Number of faults.
+          FaultStateActive:
+            type: boolean
+            description: A value indicating whether the fault state is active.
+    ObdiiFaultRecord:
+      description: A data record class that contains OBD-II fault data.
+      allOf:
+      - $ref: '#/components/schemas/BaseRecord'
+      - type: object
+        properties:
+          Code:
+            type: string
+            description: Trouble code.
+          FaultStateActive:
+            type: boolean
+            description: A value indicating whether the fault state is active.
+    GenericStatusRecord:
+      description: A data record class that supports generalised data from a telematics device. Supports a specific set of codes.
+      allOf:
+      - $ref: '#/components/schemas/StatusRecord'
+      - type: object
+    VinRecord:
+      description: A data record class that contains vehicle identification data.
+      allOf:
+      - $ref: '#/components/schemas/BaseRecord'
+      - type: object
+        properties:
+          VehicleIdentificationNumber:
+            type: string
+            description: Vehicle Identification Number.
+    ResponseErrors:
+      type: array
+      items:
+        type: string
+    DriverChangeRecord:
+      description: A data record class that contains driver change data.
+      allOf:
+      - $ref: '#/components/schemas/BaseRecord'
+      - type: object
+        properties:
+          KeyType:
+            type: integer
+            minimum: 0
+            maximum: 255
+            description: The key type.
+          DriverId:
+            type: string
+            format: byte
+            maxLength: 239
+            description: Driver ID, Base64 encoded.
+    BaseRecord:
+      type: object
+      description: An abstract data record class (all fields are required).
+      properties:
+        Type:
+          type: string
+          description: Indicates the type of record.
+        DateTime:
+          type: string
+          format: date-time
+          description: Date and time of the record in the ISO 8601 RFC3339, UTC zulu format yyyy-MM-ddTHH:mm:ss.ffffffZ is recommended. See DIG guide *Working with Dates* section for more details.
+        SerialNo:
+          type: string
+          description: Device serial number.
+      additionalProperties: false
     BluetoothRecord:
       description: A data record class that contains bluetooth data.
       allOf:
@@ -302,66 +368,6 @@ components:
             minimum: 0
             maximum: 255
             description: Identifies the type of bluetooth data contained in the data field.
-    VinRecord:
-      description: A data record class that contains vehicle identification data.
-      allOf:
-      - $ref: '#/components/schemas/BaseRecord'
-      - type: object
-        properties:
-          VehicleIdentificationNumber:
-            type: string
-            description: Vehicle Identification Number.
-    RecordsResponse:
-      type: object
-      properties:
-        Error:
-          $ref: '#/components/schemas/ResponseErrors'
-        Data:
-          type: string
-          format: uuid
-    BaseRecord:
-      type: object
-      description: An abstract data record class (all fields are required).
-      properties:
-        Type:
-          type: string
-          description: Indicates the type of record.
-        DateTime:
-          type: string
-          format: date-time
-          description: Date and time of the record in the ISO 8601 RFC3339, UTC zulu format yyyy-MM-ddTHH:mm:ss.ffffffZ is recommended. See DIG guide *Working with Dates* section for more details.
-        SerialNo:
-          type: string
-          description: Device serial number.
-      additionalProperties: false
-    DriverChangeRecord:
-      description: A data record class that contains driver change data.
-      allOf:
-      - $ref: '#/components/schemas/BaseRecord'
-      - type: object
-        properties:
-          KeyType:
-            type: integer
-            minimum: 0
-            maximum: 255
-            description: The key type.
-          DriverId:
-            type: string
-            format: byte
-            maxLength: 239
-            description: Driver ID, Base64 encoded.
-    ObdiiFaultRecord:
-      description: A data record class that contains OBD-II fault data.
-      allOf:
-      - $ref: '#/components/schemas/BaseRecord'
-      - type: object
-        properties:
-          Code:
-            type: string
-            description: Trouble code.
-          FaultStateActive:
-            type: boolean
-            description: A value indicating whether the fault state is active.
   examples:
     GenericErrorResponseExample:
       summary: Sample of a generic error response

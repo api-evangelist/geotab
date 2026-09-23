@@ -1,9 +1,7 @@
 {
   "provider": "geotab",
   "sources": [
-    "geotab-authentication-api-openapi.yml",
-    "geotab-invalid-records-api-openapi.yml",
-    "geotab-records-api-openapi.yml"
+    "_original/geotab-data-intake-gateway-openapi.yml"
   ],
   "outputs": [
     "geotab-authentication-api-openapi.yml",
@@ -13,6 +11,17 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "geotab-data-intake-gateway-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "geotab-data-intake-gateway-openapi.yml: declared missing tag: Authentication",
+    "geotab-data-intake-gateway-openapi.yml: declared missing tag: Invalid Records",
+    "geotab-data-intake-gateway-openapi.yml: declared missing tag: Records",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "geotab-authentication-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "geotab-invalid-records-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "geotab-records-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
