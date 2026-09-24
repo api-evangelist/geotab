@@ -78,8 +78,6 @@ apis:
     url: json-schema/geotab-gps-record-schema.json
   - type: JSONSchema
     url: json-schema/geotab-status-record-schema.json
-  - url: graphql/geotab-graphql.md
-    type: GraphQL
   contact:
   - FN: Geotab Developer Support
     url: https://developers.geotab.com/
