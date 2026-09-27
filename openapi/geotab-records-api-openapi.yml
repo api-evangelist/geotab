@@ -86,17 +86,24 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    BinaryRecord:
-      description: A data record class that supports arbitrary binary data.
+    BluetoothRecord:
+      description: A data record class that contains bluetooth data.
       allOf:
       - $ref: '#/components/schemas/BaseRecord'
       - type: object
         properties:
-          Data:
+          Address:
             type: string
-            format: byte
-            maxLength: 32745
-            description: Arbitrary binary payload, Base64 encoded. Maximum size of 32745 bytes.
+            description: The string MAC address of the Bluetooth sensor  (e.g. FF:FF:FF:00:AA:9B).
+          Data:
+            type: number
+            format: float (4-bytes signed)
+            description: The floating point value of the data. The meaning and unit of measure is dependent on data type.
+          DataType:
+            type: integer
+            minimum: 0
+            maximum: 255
+            description: Identifies the type of bluetooth data contained in the data field.
     GenericFaultRecord:
       description: A data record class that contains generic fault data.
       allOf:
@@ -108,6 +115,185 @@ components:
             minimum: 128
             maximum: 1999
             description: Diagnostic ID code (of type fault). (Range >=128, <=1999)
+          FaultStateActive:
+            type: boolean
+            description: A value indicating whether the fault state is active.
+    ErrorResponse:
+      type: object
+      properties:
+        Error:
+          $ref: '#/components/schemas/ResponseErrors'
+        Data:
+          type: string
+    AccelerationRecord:
+      description: A data record class that contains acceleration data.
+      allOf:
+      - $ref: '#/components/schemas/BaseRecord'
+      - type: object
+        properties:
+          X:
+            type: integer
+            format: int16
+            description: The X-axis acceleration (forward or backward) in milli-g (1000 milli-g = 1 G Gravitational force).
+          Y:
+            type: integer
+            format: int16
+            description: The Y-axis acceleration (right or left) in milli-g (1000 milli-g = 1 G Gravitational force).
+          Z:
+            type: integer
+            format: int16
+            description: The Z-axis acceleration (up or down) in milli-g (1000 milli-g = 1 G Gravitational force).
+    ObdiiFaultRecord:
+      description: A data record class that contains OBD-II fault data.
+      allOf:
+      - $ref: '#/components/schemas/BaseRecord'
+      - type: object
+        properties:
+          Code:
+            type: string
+            description: Trouble code.
+          FaultStateActive:
+            type: boolean
+            description: A value indicating whether the fault state is active.
+    DriverChangeRecord:
+      description: A data record class that contains driver change data.
+      allOf:
+      - $ref: '#/components/schemas/BaseRecord'
+      - type: object
+        properties:
+          KeyType:
+            type: integer
+            minimum: 0
+            maximum: 255
+            description: The key type.
+          DriverId:
+            type: string
+            format: byte
+            maxLength: 239
+            description: Driver ID, Base64 encoded.
+    ResponseErrors:
+      type: array
+      items:
+        type: string
+    J1939FaultRecord:
+      description: A data record class that contains J1939 fault data.
+      allOf:
+      - $ref: '#/components/schemas/BaseRecord'
+      - type: object
+        properties:
+          SuspectParameterNumber:
+            type: integer
+            description: Unique number assigned to every suspect parameter number (SPN).
+          FailureModeIdentifier:
+            type: integer
+            format: uint8
+            minimum: 0
+            maximum: 255
+            description: Failure mode identifier associated with a diagnostic trouble code.
+          OccurrenceCount:
+            type: integer
+            format: uint8
+            minimum: 0
+            maximum: 255
+            description: Number of times this fault has been recorded.
+          SourceAddress:
+            type: integer
+            format: uint8
+            minimum: 0
+            maximum: 255
+            description: The address of a controller application.
+          MalfunctionLamp:
+            type: boolean
+            description: Lamp to indicate when there is an emission related trouble code active (MIL).
+          RedStopLamp:
+            type: boolean
+            description: Lamp to indicate a problem that is severe enough to warrant stopping the vehicle (RSL).
+          AmberWarningLamp:
+            type: boolean
+            description: Lamp to indicate a problem with the vehicle system but the vehicle does not need to be stopped immediately (AWL).
+          ProtectWarningLamp:
+            type: boolean
+            description: Lamp to indicate a problem with a vehicle system that is most likely not electronic subsystem related (PL).
+          FaultStateActive:
+            type: boolean
+            description: A value indicating whether the fault state is active.
+    GenericStatusRecord:
+      description: A data record class that supports generalised data from a telematics device. Supports a specific set of codes.
+      allOf:
+      - $ref: '#/components/schemas/StatusRecord'
+      - type: object
+    RecordsResponse:
+      type: object
+      properties:
+        Error:
+          $ref: '#/components/schemas/ResponseErrors'
+        Data:
+          type: string
+          format: uuid
+    BaseRecord:
+      type: object
+      description: An abstract data record class (all fields are required).
+      properties:
+        Type:
+          type: string
+          description: Indicates the type of record.
+        DateTime:
+          type: string
+          format: date-time
+          description: Date and time of the record in the ISO 8601 RFC3339, UTC zulu format yyyy-MM-ddTHH:mm:ss.ffffffZ is recommended. See DIG guide *Working with Dates* section for more details.
+        SerialNo:
+          type: string
+          description: Device serial number.
+      additionalProperties: false
+    VinRecord:
+      description: A data record class that contains vehicle identification data.
+      allOf:
+      - $ref: '#/components/schemas/BaseRecord'
+      - type: object
+        properties:
+          VehicleIdentificationNumber:
+            type: string
+            description: Vehicle Identification Number.
+    J1708FaultRecord:
+      description: A data record class that contains J1708 fault data.
+      allOf:
+      - $ref: '#/components/schemas/BaseRecord'
+      - type: object
+        properties:
+          MessageId:
+            type: integer
+            format: uint8
+            minimum: 0
+            maximum: 255
+            description: Identifier for the component sending the message.
+          ParameterId:
+            type:
+            - integer
+            - 'null'
+            format: uint16
+            minimum: 0
+            maximum: 511
+            description: Parameter identification without a related Subsystem ID.
+          SubsystemId:
+            type:
+            - integer
+            - 'null'
+            format: uint16
+            minimum: 0
+            maximum: 511
+            description: Identifies a section of the control system without a related Parameter ID.
+          FailureModeIdentifier:
+            type: integer
+            format: uint8
+            minimum: 0
+            maximum: 15
+            description: Failure mode identifier associated with a diagnostic trouble code.
+          OccurrenceCount:
+            type: integer
+            format: uint8
+            minimum: 0
+            maximum: 255
+            description: Number of faults.
           FaultStateActive:
             type: boolean
             description: A value indicating whether the fault state is active.
@@ -123,6 +309,17 @@ components:
           Value:
             type: integer
             description: The value of the diagnostic. (valid values depend on diagnostic code)
+    BinaryRecord:
+      description: A data record class that supports arbitrary binary data.
+      allOf:
+      - $ref: '#/components/schemas/BaseRecord'
+      - type: object
+        properties:
+          Data:
+            type: string
+            format: byte
+            maxLength: 32745
+            description: Arbitrary binary payload, Base64 encoded. Maximum size of 32745 bytes.
     GpsRecord:
       description: A data record class that contains latitudinal and longitudinal location data and speed (km/h). Other ancillary flags are also supported.
       allOf:
@@ -171,203 +368,6 @@ components:
             type: number
             format: float (4-bytes signed)
             description: The speed in kilometers per hour.
-    RecordsResponse:
-      type: object
-      properties:
-        Error:
-          $ref: '#/components/schemas/ResponseErrors'
-        Data:
-          type: string
-          format: uuid
-    J1939FaultRecord:
-      description: A data record class that contains J1939 fault data.
-      allOf:
-      - $ref: '#/components/schemas/BaseRecord'
-      - type: object
-        properties:
-          SuspectParameterNumber:
-            type: integer
-            description: Unique number assigned to every suspect parameter number (SPN).
-          FailureModeIdentifier:
-            type: integer
-            format: uint8
-            minimum: 0
-            maximum: 255
-            description: Failure mode identifier associated with a diagnostic trouble code.
-          OccurrenceCount:
-            type: integer
-            format: uint8
-            minimum: 0
-            maximum: 255
-            description: Number of times this fault has been recorded.
-          SourceAddress:
-            type: integer
-            format: uint8
-            minimum: 0
-            maximum: 255
-            description: The address of a controller application.
-          MalfunctionLamp:
-            type: boolean
-            description: Lamp to indicate when there is an emission related trouble code active (MIL).
-          RedStopLamp:
-            type: boolean
-            description: Lamp to indicate a problem that is severe enough to warrant stopping the vehicle (RSL).
-          AmberWarningLamp:
-            type: boolean
-            description: Lamp to indicate a problem with the vehicle system but the vehicle does not need to be stopped immediately (AWL).
-          ProtectWarningLamp:
-            type: boolean
-            description: Lamp to indicate a problem with a vehicle system that is most likely not electronic subsystem related (PL).
-          FaultStateActive:
-            type: boolean
-            description: A value indicating whether the fault state is active.
-    ErrorResponse:
-      type: object
-      properties:
-        Error:
-          $ref: '#/components/schemas/ResponseErrors'
-        Data:
-          type: string
-    AccelerationRecord:
-      description: A data record class that contains acceleration data.
-      allOf:
-      - $ref: '#/components/schemas/BaseRecord'
-      - type: object
-        properties:
-          X:
-            type: integer
-            format: int16
-            description: The X-axis acceleration (forward or backward) in milli-g (1000 milli-g = 1 G Gravitational force).
-          Y:
-            type: integer
-            format: int16
-            description: The Y-axis acceleration (right or left) in milli-g (1000 milli-g = 1 G Gravitational force).
-          Z:
-            type: integer
-            format: int16
-            description: The Z-axis acceleration (up or down) in milli-g (1000 milli-g = 1 G Gravitational force).
-    J1708FaultRecord:
-      description: A data record class that contains J1708 fault data.
-      allOf:
-      - $ref: '#/components/schemas/BaseRecord'
-      - type: object
-        properties:
-          MessageId:
-            type: integer
-            format: uint8
-            minimum: 0
-            maximum: 255
-            description: Identifier for the component sending the message.
-          ParameterId:
-            type:
-            - integer
-            - 'null'
-            format: uint16
-            minimum: 0
-            maximum: 511
-            description: Parameter identification without a related Subsystem ID.
-          SubsystemId:
-            type:
-            - integer
-            - 'null'
-            format: uint16
-            minimum: 0
-            maximum: 511
-            description: Identifies a section of the control system without a related Parameter ID.
-          FailureModeIdentifier:
-            type: integer
-            format: uint8
-            minimum: 0
-            maximum: 15
-            description: Failure mode identifier associated with a diagnostic trouble code.
-          OccurrenceCount:
-            type: integer
-            format: uint8
-            minimum: 0
-            maximum: 255
-            description: Number of faults.
-          FaultStateActive:
-            type: boolean
-            description: A value indicating whether the fault state is active.
-    ObdiiFaultRecord:
-      description: A data record class that contains OBD-II fault data.
-      allOf:
-      - $ref: '#/components/schemas/BaseRecord'
-      - type: object
-        properties:
-          Code:
-            type: string
-            description: Trouble code.
-          FaultStateActive:
-            type: boolean
-            description: A value indicating whether the fault state is active.
-    GenericStatusRecord:
-      description: A data record class that supports generalised data from a telematics device. Supports a specific set of codes.
-      allOf:
-      - $ref: '#/components/schemas/StatusRecord'
-      - type: object
-    VinRecord:
-      description: A data record class that contains vehicle identification data.
-      allOf:
-      - $ref: '#/components/schemas/BaseRecord'
-      - type: object
-        properties:
-          VehicleIdentificationNumber:
-            type: string
-            description: Vehicle Identification Number.
-    ResponseErrors:
-      type: array
-      items:
-        type: string
-    DriverChangeRecord:
-      description: A data record class that contains driver change data.
-      allOf:
-      - $ref: '#/components/schemas/BaseRecord'
-      - type: object
-        properties:
-          KeyType:
-            type: integer
-            minimum: 0
-            maximum: 255
-            description: The key type.
-          DriverId:
-            type: string
-            format: byte
-            maxLength: 239
-            description: Driver ID, Base64 encoded.
-    BaseRecord:
-      type: object
-      description: An abstract data record class (all fields are required).
-      properties:
-        Type:
-          type: string
-          description: Indicates the type of record.
-        DateTime:
-          type: string
-          format: date-time
-          description: Date and time of the record in the ISO 8601 RFC3339, UTC zulu format yyyy-MM-ddTHH:mm:ss.ffffffZ is recommended. See DIG guide *Working with Dates* section for more details.
-        SerialNo:
-          type: string
-          description: Device serial number.
-      additionalProperties: false
-    BluetoothRecord:
-      description: A data record class that contains bluetooth data.
-      allOf:
-      - $ref: '#/components/schemas/BaseRecord'
-      - type: object
-        properties:
-          Address:
-            type: string
-            description: The string MAC address of the Bluetooth sensor  (e.g. FF:FF:FF:00:AA:9B).
-          Data:
-            type: number
-            format: float (4-bytes signed)
-            description: The floating point value of the data. The meaning and unit of measure is dependent on data type.
-          DataType:
-            type: integer
-            minimum: 0
-            maximum: 255
-            description: Identifies the type of bluetooth data contained in the data field.
   examples:
     GenericErrorResponseExample:
       summary: Sample of a generic error response

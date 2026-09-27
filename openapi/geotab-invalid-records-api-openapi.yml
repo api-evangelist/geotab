@@ -90,13 +90,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    InvalidRecordsResponse:
-      type: object
-      properties:
-        Error:
-          $ref: '#/components/schemas/ResponseErrors'
-        Data:
-          $ref: '#/components/schemas/InvalidRecordSet'
     ErrorResponse:
       type: object
       properties:
@@ -104,6 +97,53 @@ components:
           $ref: '#/components/schemas/ResponseErrors'
         Data:
           type: string
+    InvalidRecord:
+      type: object
+      description: A data record class that contains data which is not accepted by the API.
+      properties:
+        BaseRecord:
+          $ref: '#/components/schemas/BaseRecord'
+        Cause:
+          type:
+          - string
+          - 'null'
+          description: Reason the record was rejected.
+        TimeStamp:
+          type: string
+          format: date-time
+          description: Date and time the record was marked invalid in the ISO 8601 RFC3339 format.
+        UserId:
+          type:
+          - string
+          - 'null'
+          description: ID of the user who owns this record.
+      additionalProperties: false
+    ResponseErrors:
+      type: array
+      items:
+        type: string
+    InvalidRecordsResponse:
+      type: object
+      properties:
+        Error:
+          $ref: '#/components/schemas/ResponseErrors'
+        Data:
+          $ref: '#/components/schemas/InvalidRecordSet'
+    BaseRecord:
+      type: object
+      description: An abstract data record class (all fields are required).
+      properties:
+        Type:
+          type: string
+          description: Indicates the type of record.
+        DateTime:
+          type: string
+          format: date-time
+          description: Date and time of the record in the ISO 8601 RFC3339, UTC zulu format yyyy-MM-ddTHH:mm:ss.ffffffZ is recommended. See DIG guide *Working with Dates* section for more details.
+        SerialNo:
+          type: string
+          description: Device serial number.
+      additionalProperties: false
     InvalidRecordSet:
       type: object
       description: A data record class that contains invalid record data.
@@ -129,46 +169,6 @@ components:
           items:
             $ref: '#/components/schemas/InvalidRecord'
           description: Array of InvalidRecords.
-      additionalProperties: false
-    ResponseErrors:
-      type: array
-      items:
-        type: string
-    BaseRecord:
-      type: object
-      description: An abstract data record class (all fields are required).
-      properties:
-        Type:
-          type: string
-          description: Indicates the type of record.
-        DateTime:
-          type: string
-          format: date-time
-          description: Date and time of the record in the ISO 8601 RFC3339, UTC zulu format yyyy-MM-ddTHH:mm:ss.ffffffZ is recommended. See DIG guide *Working with Dates* section for more details.
-        SerialNo:
-          type: string
-          description: Device serial number.
-      additionalProperties: false
-    InvalidRecord:
-      type: object
-      description: A data record class that contains data which is not accepted by the API.
-      properties:
-        BaseRecord:
-          $ref: '#/components/schemas/BaseRecord'
-        Cause:
-          type:
-          - string
-          - 'null'
-          description: Reason the record was rejected.
-        TimeStamp:
-          type: string
-          format: date-time
-          description: Date and time the record was marked invalid in the ISO 8601 RFC3339 format.
-        UserId:
-          type:
-          - string
-          - 'null'
-          description: ID of the user who owns this record.
       additionalProperties: false
   examples:
     GenericErrorResponseExample:

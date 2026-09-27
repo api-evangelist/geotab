@@ -208,37 +208,7 @@ paths:
                 example:
                   $ref: '#/components/examples/GenericErrorResponseExample'
 components:
-  examples:
-    AuthenticatedResponseExample:
-      summary: Sample of a successful authenticated response.
-      value:
-        Error: []
-        Data:
-          Authenticated: true
-          UserId: dig@geo.tab
-          BearerToken:
-            TokenString: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImRpZ0BnZW8udGFiIiwibmJmIjoxNjEyODQ2ODEwLCJleHAiOjE2MTMxMDYwMTAsImlhdCI6MTYxMjg0NjgxMH0.pXS0ehnRCwZSzGNLSYGlh_oJCnXieFZBu7HBV6y0b5Q
-            Created: '2019-07-26T00:00:10'
-            Expires: '2019-07-26T00:00:10'
-          RefreshToken:
-            TokenString: m=+tunBX6uDBY/Rk9OUQeZdCdmaQgzPHdGvVH2B3cuCXwjADdqvD44vyCr0Z
-            Created: '2019-07-26T00:00:10'
-            Expires: '2019-07-26T00:00:10'
-    GenericErrorResponseExample:
-      summary: Sample of a generic error response
-      description: Note that Error and Data are mutually exclusive. In error condition Error is populated with one or more errors; Data will be empty.
-      value:
-        Error:
-        - Error message here
-        Data: {}
   schemas:
-    AuthenticationSuccessResponse:
-      type: object
-      properties:
-        Error:
-          $ref: '#/components/schemas/ResponseErrors'
-        Data:
-          $ref: '#/components/schemas/AuthenticationStatus'
     ErrorResponse:
       type: object
       properties:
@@ -246,32 +216,6 @@ components:
           $ref: '#/components/schemas/ResponseErrors'
         Data:
           type: string
-    AuthenticationStatus:
-      type: object
-      properties:
-        Authenticated:
-          type: boolean
-        UserId:
-          type: string
-        BearerToken:
-          $ref: '#/components/schemas/Token'
-        RefreshToken:
-          $ref: '#/components/schemas/Token'
-    AuthenticateModel:
-      required:
-      - Password
-      - Username
-      type: object
-      properties:
-        Username:
-          type: string
-        Password:
-          type: string
-      additionalProperties: false
-    ResponseErrors:
-      type: array
-      items:
-        type: string
     RevokeTokenSuccessResponse:
       type: object
       properties:
@@ -301,6 +245,62 @@ components:
         Created:
           type: string
           format: date-time
+    AuthenticationStatus:
+      type: object
+      properties:
+        Authenticated:
+          type: boolean
+        UserId:
+          type: string
+        BearerToken:
+          $ref: '#/components/schemas/Token'
+        RefreshToken:
+          $ref: '#/components/schemas/Token'
+    ResponseErrors:
+      type: array
+      items:
+        type: string
+    AuthenticateModel:
+      required:
+      - Password
+      - Username
+      type: object
+      properties:
+        Username:
+          type: string
+        Password:
+          type: string
+      additionalProperties: false
+    AuthenticationSuccessResponse:
+      type: object
+      properties:
+        Error:
+          $ref: '#/components/schemas/ResponseErrors'
+        Data:
+          $ref: '#/components/schemas/AuthenticationStatus'
+  examples:
+    GenericErrorResponseExample:
+      summary: Sample of a generic error response
+      description: Note that Error and Data are mutually exclusive. In error condition Error is populated with one or more errors; Data will be empty.
+      value:
+        Error:
+        - Error message here
+        Data: {}
+    AuthenticatedResponseExample:
+      summary: Sample of a successful authenticated response.
+      value:
+        Error: []
+        Data:
+          Authenticated: true
+          UserId: dig@geo.tab
+          BearerToken:
+            TokenString: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImRpZ0BnZW8udGFiIiwibmJmIjoxNjEyODQ2ODEwLCJleHAiOjE2MTMxMDYwMTAsImlhdCI6MTYxMjg0NjgxMH0.pXS0ehnRCwZSzGNLSYGlh_oJCnXieFZBu7HBV6y0b5Q
+            Created: '2019-07-26T00:00:10'
+            Expires: '2019-07-26T00:00:10'
+          RefreshToken:
+            TokenString: m=+tunBX6uDBY/Rk9OUQeZdCdmaQgzPHdGvVH2B3cuCXwjADdqvD44vyCr0Z
+            Created: '2019-07-26T00:00:10'
+            Expires: '2019-07-26T00:00:10'
   securitySchemes:
     bearerAuth:
       type: http
