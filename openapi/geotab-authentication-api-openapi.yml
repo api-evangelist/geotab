@@ -223,17 +223,13 @@ components:
           $ref: '#/components/schemas/ResponseErrors'
         Data:
           type: string
-    TokenRefreshModel:
-      required:
-      - BearerToken
-      - RefreshToken
+    AuthenticationSuccessResponse:
       type: object
       properties:
-        BearerToken:
-          type: string
-        RefreshToken:
-          type: string
-      additionalProperties: false
+        Error:
+          $ref: '#/components/schemas/ResponseErrors'
+        Data:
+          $ref: '#/components/schemas/AuthenticationStatus'
     Token:
       type: object
       properties:
@@ -245,21 +241,6 @@ components:
         Created:
           type: string
           format: date-time
-    AuthenticationStatus:
-      type: object
-      properties:
-        Authenticated:
-          type: boolean
-        UserId:
-          type: string
-        BearerToken:
-          $ref: '#/components/schemas/Token'
-        RefreshToken:
-          $ref: '#/components/schemas/Token'
-    ResponseErrors:
-      type: array
-      items:
-        type: string
     AuthenticateModel:
       required:
       - Password
@@ -271,13 +252,32 @@ components:
         Password:
           type: string
       additionalProperties: false
-    AuthenticationSuccessResponse:
+    TokenRefreshModel:
+      required:
+      - BearerToken
+      - RefreshToken
       type: object
       properties:
-        Error:
-          $ref: '#/components/schemas/ResponseErrors'
-        Data:
-          $ref: '#/components/schemas/AuthenticationStatus'
+        BearerToken:
+          type: string
+        RefreshToken:
+          type: string
+      additionalProperties: false
+    ResponseErrors:
+      type: array
+      items:
+        type: string
+    AuthenticationStatus:
+      type: object
+      properties:
+        Authenticated:
+          type: boolean
+        UserId:
+          type: string
+        BearerToken:
+          $ref: '#/components/schemas/Token'
+        RefreshToken:
+          $ref: '#/components/schemas/Token'
   examples:
     GenericErrorResponseExample:
       summary: Sample of a generic error response
