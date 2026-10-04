@@ -53,6 +53,7 @@ tags:
 - Route Optimization
 - GPS Tracking
 - IoT
+- Fleet
 apis:
 - aid: geotab:mygeotab-api
   name: MyGeotab API
