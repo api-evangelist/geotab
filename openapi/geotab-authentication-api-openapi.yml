@@ -209,38 +209,6 @@ paths:
                   $ref: '#/components/examples/GenericErrorResponseExample'
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        Error:
-          $ref: '#/components/schemas/ResponseErrors'
-        Data:
-          type: string
-    RevokeTokenSuccessResponse:
-      type: object
-      properties:
-        Error:
-          $ref: '#/components/schemas/ResponseErrors'
-        Data:
-          type: string
-    AuthenticationSuccessResponse:
-      type: object
-      properties:
-        Error:
-          $ref: '#/components/schemas/ResponseErrors'
-        Data:
-          $ref: '#/components/schemas/AuthenticationStatus'
-    Token:
-      type: object
-      properties:
-        TokenString:
-          type: string
-        Expires:
-          type: string
-          format: date-time
-        Created:
-          type: string
-          format: date-time
     AuthenticateModel:
       required:
       - Password
@@ -267,6 +235,24 @@ components:
       type: array
       items:
         type: string
+    RevokeTokenSuccessResponse:
+      type: object
+      properties:
+        Error:
+          $ref: '#/components/schemas/ResponseErrors'
+        Data:
+          type: string
+    Token:
+      type: object
+      properties:
+        TokenString:
+          type: string
+        Expires:
+          type: string
+          format: date-time
+        Created:
+          type: string
+          format: date-time
     AuthenticationStatus:
       type: object
       properties:
@@ -278,6 +264,20 @@ components:
           $ref: '#/components/schemas/Token'
         RefreshToken:
           $ref: '#/components/schemas/Token'
+    AuthenticationSuccessResponse:
+      type: object
+      properties:
+        Error:
+          $ref: '#/components/schemas/ResponseErrors'
+        Data:
+          $ref: '#/components/schemas/AuthenticationStatus'
+    ErrorResponse:
+      type: object
+      properties:
+        Error:
+          $ref: '#/components/schemas/ResponseErrors'
+        Data:
+          type: string
   examples:
     GenericErrorResponseExample:
       summary: Sample of a generic error response
