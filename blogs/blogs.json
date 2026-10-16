@@ -16,6 +16,13 @@
   "lastChecked": "2026-07-04",
   "feeds": [
     {
+      "source": "https://www.geotab.com/blog/",
+      "feed_url": "https://www.geotab.com/blog/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    },
+    {
       "source": "https://x.com/geotab",
       "feed_url": "https://x.com/geotab",
       "title": "",
@@ -23,7 +30,7 @@
       "method": "none"
     }
   ],
-  "fetched": "2026-10-03T12:30:02Z",
+  "fetched": "2026-10-10T13:15:00Z",
   "agent_pulled": "2026-07-04",
   "post_count": 8,
   "feed_nature": "vendor-blog",
