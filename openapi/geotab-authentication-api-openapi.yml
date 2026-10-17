@@ -208,84 +208,7 @@ paths:
                 example:
                   $ref: '#/components/examples/GenericErrorResponseExample'
 components:
-  schemas:
-    AuthenticateModel:
-      required:
-      - Password
-      - Username
-      type: object
-      properties:
-        Username:
-          type: string
-        Password:
-          type: string
-      additionalProperties: false
-    TokenRefreshModel:
-      required:
-      - BearerToken
-      - RefreshToken
-      type: object
-      properties:
-        BearerToken:
-          type: string
-        RefreshToken:
-          type: string
-      additionalProperties: false
-    ResponseErrors:
-      type: array
-      items:
-        type: string
-    RevokeTokenSuccessResponse:
-      type: object
-      properties:
-        Error:
-          $ref: '#/components/schemas/ResponseErrors'
-        Data:
-          type: string
-    Token:
-      type: object
-      properties:
-        TokenString:
-          type: string
-        Expires:
-          type: string
-          format: date-time
-        Created:
-          type: string
-          format: date-time
-    AuthenticationStatus:
-      type: object
-      properties:
-        Authenticated:
-          type: boolean
-        UserId:
-          type: string
-        BearerToken:
-          $ref: '#/components/schemas/Token'
-        RefreshToken:
-          $ref: '#/components/schemas/Token'
-    AuthenticationSuccessResponse:
-      type: object
-      properties:
-        Error:
-          $ref: '#/components/schemas/ResponseErrors'
-        Data:
-          $ref: '#/components/schemas/AuthenticationStatus'
-    ErrorResponse:
-      type: object
-      properties:
-        Error:
-          $ref: '#/components/schemas/ResponseErrors'
-        Data:
-          type: string
   examples:
-    GenericErrorResponseExample:
-      summary: Sample of a generic error response
-      description: Note that Error and Data are mutually exclusive. In error condition Error is populated with one or more errors; Data will be empty.
-      value:
-        Error:
-        - Error message here
-        Data: {}
     AuthenticatedResponseExample:
       summary: Sample of a successful authenticated response.
       value:
@@ -301,6 +224,83 @@ components:
             TokenString: m=+tunBX6uDBY/Rk9OUQeZdCdmaQgzPHdGvVH2B3cuCXwjADdqvD44vyCr0Z
             Created: '2019-07-26T00:00:10'
             Expires: '2019-07-26T00:00:10'
+    GenericErrorResponseExample:
+      summary: Sample of a generic error response
+      description: Note that Error and Data are mutually exclusive. In error condition Error is populated with one or more errors; Data will be empty.
+      value:
+        Error:
+        - Error message here
+        Data: {}
+  schemas:
+    ResponseErrors:
+      type: array
+      items:
+        type: string
+    RevokeTokenSuccessResponse:
+      type: object
+      properties:
+        Error:
+          $ref: '#/components/schemas/ResponseErrors'
+        Data:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        Error:
+          $ref: '#/components/schemas/ResponseErrors'
+        Data:
+          type: string
+    TokenRefreshModel:
+      required:
+      - BearerToken
+      - RefreshToken
+      type: object
+      properties:
+        BearerToken:
+          type: string
+        RefreshToken:
+          type: string
+      additionalProperties: false
+    Token:
+      type: object
+      properties:
+        TokenString:
+          type: string
+        Expires:
+          type: string
+          format: date-time
+        Created:
+          type: string
+          format: date-time
+    AuthenticationSuccessResponse:
+      type: object
+      properties:
+        Error:
+          $ref: '#/components/schemas/ResponseErrors'
+        Data:
+          $ref: '#/components/schemas/AuthenticationStatus'
+    AuthenticationStatus:
+      type: object
+      properties:
+        Authenticated:
+          type: boolean
+        UserId:
+          type: string
+        BearerToken:
+          $ref: '#/components/schemas/Token'
+        RefreshToken:
+          $ref: '#/components/schemas/Token'
+    AuthenticateModel:
+      required:
+      - Password
+      - Username
+      type: object
+      properties:
+        Username:
+          type: string
+        Password:
+          type: string
+      additionalProperties: false
   securitySchemes:
     bearerAuth:
       type: http

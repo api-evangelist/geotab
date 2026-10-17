@@ -89,40 +89,7 @@ paths:
       operationId: getInvalidrecords
       x-operation-id-source: derived
 components:
-  examples:
-    GenericErrorResponseExample:
-      summary: Sample of a generic error response
-      description: Note that Error and Data are mutually exclusive. In error condition Error is populated with one or more errors; Data will be empty.
-      value:
-        Error:
-        - Error message here
-        Data: {}
   schemas:
-    ResponseErrors:
-      type: array
-      items:
-        type: string
-    InvalidRecord:
-      type: object
-      description: A data record class that contains data which is not accepted by the API.
-      properties:
-        BaseRecord:
-          $ref: '#/components/schemas/BaseRecord'
-        Cause:
-          type:
-          - string
-          - 'null'
-          description: Reason the record was rejected.
-        TimeStamp:
-          type: string
-          format: date-time
-          description: Date and time the record was marked invalid in the ISO 8601 RFC3339 format.
-        UserId:
-          type:
-          - string
-          - 'null'
-          description: ID of the user who owns this record.
-      additionalProperties: false
     InvalidRecordSet:
       type: object
       description: A data record class that contains invalid record data.
@@ -149,6 +116,45 @@ components:
             $ref: '#/components/schemas/InvalidRecord'
           description: Array of InvalidRecords.
       additionalProperties: false
+    ResponseErrors:
+      type: array
+      items:
+        type: string
+    InvalidRecordsResponse:
+      type: object
+      properties:
+        Error:
+          $ref: '#/components/schemas/ResponseErrors'
+        Data:
+          $ref: '#/components/schemas/InvalidRecordSet'
+    InvalidRecord:
+      type: object
+      description: A data record class that contains data which is not accepted by the API.
+      properties:
+        BaseRecord:
+          $ref: '#/components/schemas/BaseRecord'
+        Cause:
+          type:
+          - string
+          - 'null'
+          description: Reason the record was rejected.
+        TimeStamp:
+          type: string
+          format: date-time
+          description: Date and time the record was marked invalid in the ISO 8601 RFC3339 format.
+        UserId:
+          type:
+          - string
+          - 'null'
+          description: ID of the user who owns this record.
+      additionalProperties: false
+    ErrorResponse:
+      type: object
+      properties:
+        Error:
+          $ref: '#/components/schemas/ResponseErrors'
+        Data:
+          type: string
     BaseRecord:
       type: object
       description: An abstract data record class (all fields are required).
@@ -164,20 +170,14 @@ components:
           type: string
           description: Device serial number.
       additionalProperties: false
-    InvalidRecordsResponse:
-      type: object
-      properties:
+  examples:
+    GenericErrorResponseExample:
+      summary: Sample of a generic error response
+      description: Note that Error and Data are mutually exclusive. In error condition Error is populated with one or more errors; Data will be empty.
+      value:
         Error:
-          $ref: '#/components/schemas/ResponseErrors'
-        Data:
-          $ref: '#/components/schemas/InvalidRecordSet'
-    ErrorResponse:
-      type: object
-      properties:
-        Error:
-          $ref: '#/components/schemas/ResponseErrors'
-        Data:
-          type: string
+        - Error message here
+        Data: {}
   securitySchemes:
     bearerAuth:
       type: http
