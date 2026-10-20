@@ -8,6 +8,45 @@ marketplace_apps:
   adapter: sweep-automotive.py:geotab
   listed: 580
 edges:
+- partner_name: FedRAMP
+  partner: null
+  partner_match: register
+  type: contract
+  channel: regulator-register
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://marketplace.fedramp.gov/products/FR1918150046
+  category: FedRAMP authorization
+  contract_reference:
+    register: FedRAMP Marketplace data (github.com/18F/fedramp-data data/data.json @4b73d9247f)
+    standard: FedRAMP
+    spec_file: null
+    role: fedramp-authorized
+    registered_name: Geotab
+    register_id: FR1918150046
+    matched_domain: geotab.com
+    matched_by: domain
+    domain_source: website
+    designations:
+    - Compliant
+    packages:
+    - Geotab Telematics Platform Government (GTP Gov)
+    service_models:
+    - SaaS
+    paths:
+    - Agency
+    signal_note: certified_products = one entry per AUTHORIZED impact level, never per package; packages, service
+      models, paths and leveraging agencies are context, never counted. The register lists current designations
+      only (revoked / expired are removed), so lapsed is always false
+    detected_by: sweep-gov-cloud.py
+    detected: '2026-10-15'
+    certified_products:
+    - product: FedRAMP Moderate
+      impact_level: Moderate
+      lapsed: false
+      latest_authorization: '2020-04-24'
+  detected_by: sweep-gov-cloud.py
+  first_seen: '2026-10-15'
 - partner_name: 3AM Innovations
   app: 3AM Innovations
   partner: null
@@ -2276,6 +2315,20 @@ edges:
   partner_domain: ess-help.com
   detected_by: sweep-automotive.py
   detected: '2026-10-13'
+- partner_name: Empiric Earth
+  app: Empiric Earth
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.geotab.com/partner/empiric-earth/
+  partner_domain: empiricearth.com
+  detected_by: sweep-automotive.py
+  detected: '2026-10-19'
 - partner_name: Encompass Technologies
   app: Encompass Technologies
   partner: null
@@ -2651,7 +2704,7 @@ edges:
   relationship: platform-app
   direction: partner-built
   evidence: https://marketplace.geotab.com/partner/fleetrock-llc/
-  partner_domain: fleet
+  partner_domain: null
   detected_by: sweep-automotive.py
   detected: '2026-10-13'
 - partner_name: FleetSoft
@@ -4303,7 +4356,7 @@ edges:
   relationship: platform-app
   direction: partner-built
   evidence: https://marketplace.geotab.com/partner/mantis/
-  partner_domain: mantislive.com
+  partner_domain: mantis.io
   detected_by: sweep-automotive.py
   detected: '2026-10-13'
 - partner_name: MAPGEARS
@@ -4338,7 +4391,7 @@ edges:
   app: MarketplaceTestPartner change name
   partner: null
   partner_match: null
-  partner_candidate: null
+  partner_candidate: apigee
   type: marketplace
   marketplace: own
   channel: partner-built
@@ -4856,7 +4909,7 @@ edges:
   app: Mp Geotab Testing GeotabInc
   partner: null
   partner_match: null
-  partner_candidate: null
+  partner_candidate: apigee
   type: marketplace
   marketplace: own
   channel: partner-built
@@ -4920,20 +4973,6 @@ edges:
   direction: partner-built
   evidence: https://marketplace.geotab.com/partner/muhu/
   partner_domain: null
-  detected_by: sweep-automotive.py
-  detected: '2026-10-13'
-- partner_name: Nauto
-  app: Nauto
-  partner: nauto
-  partner_match: domain
-  partner_candidate: null
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  relationship: platform-app
-  direction: partner-built
-  evidence: https://marketplace.geotab.com/partner/nauto/
-  partner_domain: nauto.com
   detected_by: sweep-automotive.py
   detected: '2026-10-13'
 - partner_name: Navisaf
@@ -7094,8 +7133,8 @@ edges:
   detected: '2026-10-13'
 - partner_name: Tomorrow.io
   app: Tomorrow.io
-  partner: null
-  partner_match: null
+  partner: tomorrow-io
+  partner_match: domain
   partner_candidate: null
   type: marketplace
   marketplace: own
@@ -7105,7 +7144,7 @@ edges:
   evidence: https://marketplace.geotab.com/partner/tomorrow.io/
   partner_domain: tomorrow.io
   detected_by: sweep-automotive.py
-  detected: '2026-10-13'
+  detected: '2026-10-19'
 - partner_name: Tough Tech Ltd
   app: Tough Tech Ltd
   partner: null
@@ -8128,45 +8167,6 @@ edges:
   partner_domain: null
   detected_by: sweep-automotive.py
   detected: '2026-10-13'
-- partner_name: FedRAMP
-  partner: null
-  partner_match: register
-  type: contract
-  channel: regulator-register
-  relationship: standard-participant
-  direction: partner-built
-  evidence: https://marketplace.fedramp.gov/products/FR1918150046
-  category: FedRAMP authorization
-  contract_reference:
-    register: FedRAMP Marketplace data (github.com/18F/fedramp-data data/data.json @4b73d9247f)
-    standard: FedRAMP
-    spec_file: null
-    role: fedramp-authorized
-    registered_name: Geotab
-    register_id: FR1918150046
-    matched_domain: geotab.com
-    matched_by: domain
-    domain_source: website
-    designations:
-    - Compliant
-    packages:
-    - Geotab Telematics Platform Government (GTP Gov)
-    service_models:
-    - SaaS
-    paths:
-    - Agency
-    signal_note: certified_products = one entry per AUTHORIZED impact level, never per package; packages, service
-      models, paths and leveraging agencies are context, never counted. The register lists current designations
-      only (revoked / expired are removed), so lapsed is always false
-    detected_by: sweep-gov-cloud.py
-    detected: '2026-10-15'
-    certified_products:
-    - product: FedRAMP Moderate
-      impact_level: Moderate
-      lapsed: false
-      latest_authorization: '2020-04-24'
-  detected_by: sweep-gov-cloud.py
-  first_seen: '2026-10-15'
 method: searched
 checked:
 - https://govramp.org/program-participants
