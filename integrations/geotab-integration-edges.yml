@@ -8197,6 +8197,63 @@ edges:
     detected: '2026-10-20'
   detected_by: sweep-compliance-assurance.py
   first_seen: '2026-10-20'
+- partner_name: FMCSA registered Electronic Logging Devices (self-certified ELD list + revoked devices)
+  partner: null
+  partner_match: register
+  type: register
+  channel: regulator-register
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://eld.fmcsa.dot.gov/List/Index
+  category: US FMCSA Electronic Logging Device registration (hours of service)
+  contract_reference:
+    register: FMCSA registered Electronic Logging Devices (self-certified ELD list + revoked devices)
+    standard: FMCSA ELD technical specifications (49 CFR Part 395 Subpart B, Appendix A)
+    spec_file: null
+    role: eld-manufacturer
+    registered_name: Geotab Inc.
+    matched_domain: geotab.com
+    matched_by: domain
+    eld_status: active
+    certified_products:
+    - product: Electronic Logging Device
+      product_type: Electronic Logging Device
+      standard: FMCSA ELD technical specifications (49 CFR Part 395 Subpart B, Appendix A)
+      lapsed: false
+      self_certified: true
+    devices:
+    - device: Geotab Drive Cloud ELD
+      model: GO6, GO7, GO8, GO9, GO9B, GO10, PEP-GO7. PEP-GO8, or FL7 (Spireon), FL8 (Spireon) or RI7/8 (by BSM),
+        SH9
+      eld_identifier: GEOTAB
+      status: active
+    - device: Geotab Drive for Ford Trucks
+      model: Ford PassConnect
+      eld_identifier: FORD01
+      status: active
+    - device: Geotab Drive for Freightliner Trucks
+      model: CTP2, CTP3
+      eld_identifier: DAIM01
+      status: active
+    - device: Geotab Drive for International Trucks
+      model: N2
+      eld_identifier: NVSRN2
+      status: active
+    - device: Geotab Drive for Mack Trucks
+      model: TGW 2.1, TGW3
+      eld_identifier: MACK01
+      status: active
+    - device: Geotab Drive for Volvo Trucks
+      model: TGW 2.1, TGW3
+      eld_identifier: VOLVO1
+      status: active
+    signal_note: 'certified_products = one entry for the ELD product type, SELF-certified by the manufacturer against
+      the FMCSA technical specifications (lapsed: true when every listed device is revoked); device rows are context,
+      never counted'
+    detected_by: sweep-fmcsa-eld-registered-devices.py
+    detected: '2026-10-22'
+  detected_by: sweep-fmcsa-eld-registered-devices.py
+  first_seen: '2026-10-22'
 method: searched
 checked:
 - https://cloudsecurityalliance.org/star/registry
@@ -8204,6 +8261,8 @@ checked:
 - https://govramp.org/program-participants
 - https://raw.githubusercontent.com/18F/fedramp-data/4b73d9247fd6360759960e4690e3ce4ca858e0fa/data/data.json
 - https://www.applytosupply.digitalmarketplace.service.gov.uk/g-cloud-15/suppliers
+- https://eld.fmcsa.dot.gov/List/GetListOfELDs?listType=Revoked
+- https://eld.fmcsa.dot.gov/List/Index
 source:
 - https://raw.githubusercontent.com/18F/fedramp-data/4b73d9247fd6360759960e4690e3ce4ca858e0fa/data/data.json
 - https://govramp.org/program-participants
